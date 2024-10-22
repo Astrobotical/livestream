@@ -73,7 +73,9 @@ const StreamCatalog = () => {
       </div>
     </div>
       <div className="space-y-4">
-        {streams.map((stream, index) => (
+        {
+        streams.length !== 0?
+        streams.map((stream, index) => (
           <div
             key={index}
             className="bg-gray-800 rounded-lg shadow-md p-4 text-white"
@@ -86,7 +88,11 @@ const StreamCatalog = () => {
               Date: {new Date(stream.stream_time).toLocaleString()}
             </p>
           </div>
-        ))}
+        )):
+        <h2 className='text-3xl text-white text-center mt-16'>
+          No Stream Records Found
+        </h2>
+        }
       </div>
     </div>
   );

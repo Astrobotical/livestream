@@ -2,20 +2,26 @@ import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { RootState } from "../../redux/store";
 import UserProfileModal from "./user/userProfileModal";
+import Alert from '../../components/reuseables/alerts';
+import { AlertOptions } from "../../components/Models/Alerts/alertsModel";
+import clsx from 'clsx';
 const UsersPage = () => {
-  interface UserModel{
+  interface UserModel {
     name: string;
     created_at: string;
     amountSpent: number;
+    id: string;
   }
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedUser, setSelectedUser] = useState<any | null>(null);
   const [users, setUsers] = useState<UserModel[]>([]);
   const [isLoading, setLoading] = useState(true);
   const tokenSaved = useSelector((state: RootState) => state.auth.token);
+  const userID = useSelector((state: RootState) => state.user.userID);
   useEffect(() => {
     const fetchUsers = async () => {
       try {
+        console.log(userID);
         const response = await fetch('http://localhost:8000/api/admin/getUsers', {
           method: 'GET',
           headers: {
@@ -29,21 +35,21 @@ const UsersPage = () => {
         setUsers(data);
         setTimeout(() => {
           setLoading(false);// After some time, data is loaded
-        }, 500); 
+        }, 500);
       } catch (error) {
         console.error("Error fetching users:", error);
       }
     };
     fetchUsers();
   }, [tokenSaved]);
-  const handleViewProfile = (user:any)=> {
+  const handleViewProfile = (user: any) => {
     setSelectedUser(user);
     setIsModalOpen(true);
-    };
+  };
   const handleCloseModal = () => {
-      setIsModalOpen(false);
-      setSelectedUser(null);
-    };
+    setIsModalOpen(false);
+    setSelectedUser(null);
+  };
   const formatDate = (dateString: string) => {
     const date = new Date(dateString);
     const day = date.getDate().toString().padStart(2, '0');
@@ -51,13 +57,23 @@ const UsersPage = () => {
     const year = date.getFullYear();
     return `${day}/${month}/${year}`;
   };
+  const handleUserBan = (userID: string) => {
+    const alertsModel: AlertOptions = {
+      type: 'ban',
+      title: 'Account Updated',
+      message: 'Your account was updated successfully!',
+      userID: userID,
+      token: tokenSaved
+    }
+    Alert(alertsModel);
+  }
   return (
     <div className="p-4 sm:p-8">
       <h2 className="text-2xl mb-4 text-white">User Management</h2>
       <div className="max-w-6xl mx-auto">
         {/* Card Container */}
         <div className="rounded-lg p-2">
-          
+
           {/* Loading Animation */}
           {isLoading ? (
             <div className="flex justify-center items-center h-48">
@@ -107,7 +123,12 @@ const UsersPage = () => {
                           </button>
                           <button
                             type="button"
-                            className="btn btn-outline btn-error  sm:mt-2 md:ml-2 !hover:text-white"
+                            className={clsx(
+                              'btn btn-outline btn-error sm:mt-2 md:ml-2 !hover:text-white',
+                              // eslint-disable-next-line eqeqeq
+                              user.id == userID ? '!hidden' : 'block'
+                            )}
+                            onClick={() => handleUserBan(user.id)}
                           >
                             Ban User
                           </button>
@@ -127,7 +148,7 @@ const UsersPage = () => {
           )}
         </div>
       </div>
-  
+
       {/* Modal */}
       {selectedUser && (
         <UserProfileModal

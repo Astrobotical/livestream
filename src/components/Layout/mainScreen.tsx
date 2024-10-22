@@ -6,6 +6,7 @@ import { RootState } from '../../redux/store';
 
 const MainScreen = () => {
   const tokenSaved = useSelector((state: RootState) => state.auth.token);
+  const [isStreamAvailable, setStatus] = useState(false);
   const [streamIsActive, setStreamStatus] = useState(false);
   const [countdownTime, setCountdownTime] = useState(60);
   const countdownRef = useRef<number | null>(null);
@@ -54,11 +55,15 @@ const MainScreen = () => {
 
       if (response.ok) {
         const data = await response.json();
-
         setStreamStatus(false);
+        if(data.stream == null){
+
+        }else{
+          setStatus(true);
         const remainingTime = calculateRemainingTime(data.stream['stream_time']);
         startCountDown(remainingTime);
       }
+    }
     };
 
     getTodaysStream();
@@ -88,7 +93,9 @@ const MainScreen = () => {
   
     return (
       <>
-      {streamIsActive ? (
+      {
+      isStreamAvailable ?(
+      streamIsActive ? (
         // When stream is active, no need to show countdown
         <div>Stream is now active!</div>
       ) : countdownTime > 0 ? (
@@ -103,7 +110,12 @@ const MainScreen = () => {
           <Livestream />
           <Buttons />
         </div>
-      )}
+      )):(
+        <div className="flex flex-col items-center justify-center h-screen bg-gray-600">
+          <h1 className="text-4xl text-center text-white">There is no Stream Today</h1>
+        </div>  
+      )
+      }
     </>
     )
 }

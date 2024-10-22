@@ -21,7 +21,7 @@ const LoginPage = () => {
   , []);
   const handleUserSignup = async (e: React.FormEvent)=>{
     e.preventDefault();
-    const sanitizedPassword = DOMPurify.sanitize(password);
+    const sanitizedPassword = password;
     const sanizatedEmail = DOMPurify.sanitize(email);
 
     try{
@@ -31,14 +31,14 @@ const LoginPage = () => {
         'Accept': 'application/json',
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({email:sanizatedEmail,password:sanitizedPassword}),
+      body: JSON.stringify({email:sanizatedEmail,password:password}),
     });
     if(!response.ok){}
       switch(response.status){
         case 201:
         console.log(response.body);
         const data = await response.json();
-        logIn({ token: data.token, user: data.userRole })
+        logIn({ token: data.token, user: data.userRole,userID: data.userID})
           navigate('/');
         break;
         case 204:
@@ -52,7 +52,7 @@ const LoginPage = () => {
   }
   const handleUserLogin = async (e: React.FormEvent)=>{
     e.preventDefault();
-    const sanitizedPassword = DOMPurify.sanitize(password);
+    const sanitizedPassword = password;
     const sanizatedEmail = DOMPurify.sanitize(email);
 
     try{
@@ -70,7 +70,7 @@ const LoginPage = () => {
           const data = await response.json();
           console.log(data.token);
           setStatus(true)
-          logIn({ token: data.token, user: data.userRole }) //Entry for token will be removed
+          logIn({ token: data.token, user: data.userRole, userID: data.userID}) //Entry for token will be removed
           dispatch(setToken(data.token));
           navigate('/');
         break;

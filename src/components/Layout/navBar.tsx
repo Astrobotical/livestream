@@ -29,7 +29,7 @@ const NavBar = () => {
         });
         if (response.ok) {
           const data = await response.json();
-          dispatch(logIn({ token: savedToken, user: data.user }));
+          dispatch(logIn({ token: savedToken, user: data.user,userID: data.userID }));
           dispatch(setToken(savedToken));
         } else {
           dispatch(clearToken());

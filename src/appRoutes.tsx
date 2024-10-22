@@ -13,8 +13,8 @@ import StreamSetUpPage from './pages/Admin/StreamSetUpPage';
 import UsersPage from './pages/Admin/userPage';
 import StreamCatalog from './pages/Admin/Streams/streamCatalogs';
 import CreateStreamPage from './pages/Admin/Streams/createStream';
+import SettingsPage from './pages/General/UserSettings';
 //import Footer from './components/Layout/bottomNavBar';
-const SettingsPage = () => <h2 className="text-2xl">Settings (Not Added as Yet)</h2>;
 const StreamDefault = () =><Outlet></Outlet>
 const AppRoutes = () => {
   return (

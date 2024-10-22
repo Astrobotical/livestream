@@ -18,7 +18,7 @@ const DashboardLayout = () => {
 
   
   return (
-    <div className="flex min-h-screen bg-gray-700">
+    <div className="flex min-h-screen bg-gray-700 ">
       {/* Sidebar */}
       <aside
         className={`${
@@ -113,8 +113,8 @@ const DashboardLayout = () => {
       </aside>
 
       {/* Main Content Area */}
-      <div className="flex-1">
-        <main className="p-1">
+      <div className="flex-1 ">
+        <main className="p-1 ">
           <Outlet /> {/* This will render the nested routes */}
         </main>
       </div>

@@ -5,6 +5,7 @@ interface UserState {
   isLoggedIn: boolean;
   hasPaid: boolean;
   token: string;
+  userID:string|null;
 }
 
 const initialState: UserState = {
@@ -12,16 +13,18 @@ const initialState: UserState = {
   hasPaid: false,
   isAdmin: false,
   token: '',
+  userID: localStorage.getItem('userID'),
 };
 
 const userSlice = createSlice({
   name: 'user',
   initialState,
   reducers: {
-    logIn: (state, action: PayloadAction<{ token: string, user: string }>) => {
+    logIn: (state, action: PayloadAction<{ token: string, user: string,userID: string }>) => {
       state.isLoggedIn = true;
       state.token = action.payload.token;
       state.isAdmin = action.payload.user === "admin" ? true : false;
+      localStorage.setItem('userID',action.payload.userID);
     },
     logOut: (state) => {
       state.isLoggedIn = false;
