@@ -11,22 +11,45 @@ const StreamCatalog = () => {
   const toggleDropdown = () => {
     setIsOpen(!isOpen);
   };
+  const getStreamsByFilter = async (filter:string|null)=>{
+    const url = filter
+    ? `http://localhost:8000/api/admin/getStreams?filter=${filter}`
+    : 'http://localhost:8000/api/admin/getStreams';
+    const response = await fetch(url, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${tokenSaved}`,
+      },
+    }
+    );
+    if(response.ok){
+      const data = await response.json();
+      console.log(data);
+      setStreams([]);
+      setStreams(data);
+    }
+  }
   const handleFilterOptions = (when:string)=>{
     switch(when){
       case "Future":
         setFilter('Future Streams');
+        getStreamsByFilter('Future');
         toggleDropdown();
       break;
       case "Past":
         setFilter('Past Streams');
+        getStreamsByFilter('Past');
         toggleDropdown();
         break;
       case "All":
         setFilter('All Streams');
+        getStreamsByFilter('');
         toggleDropdown();
         break;
     }
   }
+
   useEffect(() => {
   const getStreams = async () =>{
     const response = await fetch('http://localhost:8000/api/admin/getStreams', {
