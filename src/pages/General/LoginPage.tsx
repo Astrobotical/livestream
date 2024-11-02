@@ -21,7 +21,7 @@ const LoginPage = () => {
   , []);
   const handleUserSignup = async (e: React.FormEvent)=>{
     e.preventDefault();
-    const sanitizedPassword = password;
+   //  const sanitizedPassword = password;
     const sanizatedEmail = DOMPurify.sanitize(email);
 
     try{
@@ -38,7 +38,7 @@ const LoginPage = () => {
         case 201:
         console.log(response.body);
         const data = await response.json();
-        logIn({ token: data.token, user: data.userRole,userID: data.userID})
+        dispatch(logIn({ token: data.token, user: data.userRole,userID: data.userID}));
           navigate('/');
         break;
         case 204:

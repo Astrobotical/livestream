@@ -8,7 +8,6 @@ const HomePage = () => {
   const navigate = useNavigate();
   const userLoggedIn = useSelector((state: RootState) => state.user.isLoggedIn);
   useEffect(() => {
-    console.log("useEffect is running");
     document.body.style.overflow = 'hidden';
     document.title = "Home | Yardie";
     // Reset the body overflow style when the component unmounts
