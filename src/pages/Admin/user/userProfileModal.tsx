@@ -19,7 +19,7 @@ interface UserProfileModalProps {
     status: string[]; // Status is an array of strings (tags
     tags: string[];
   };
-  onUpdate:() => Promise<void>;
+  onUpdate: () => Promise<void>;
   token: string; // Pass the token for API requests
 }
 const UserProfileModal: React.FC<UserProfileModalProps> = ({
@@ -33,7 +33,7 @@ const UserProfileModal: React.FC<UserProfileModalProps> = ({
   const [editMode, setEditMode] = useState(isEditMode);
   const [name, setName] = useState(user?.name || "");
   const [role, setRole] = useState(user?.Role || "viewer");
-  const [tags, setTags] = useState<string[]>(Array.isArray(user?.status) ? user?.status: []);
+  const [tags, setTags] = useState<string[]>(Array.isArray(user?.status) ? user?.status : []);
   const [tagInput, setTagInput] = useState("");
   const [suggestedTags, setSuggestedTags] = useState<string[]>([]);
   const [tagCatalog, setTagCatalog] = useState<string[]>([]); // Store existing tags
@@ -45,7 +45,7 @@ const UserProfileModal: React.FC<UserProfileModalProps> = ({
   // Fetch suggested tags as the user types
   useEffect(() => {
     //Setting previous tags
-    
+
     if (tagInput.trim() === "") {
       setSuggestedTags([]);
       return;
@@ -54,7 +54,7 @@ const UserProfileModal: React.FC<UserProfileModalProps> = ({
     const fetchTags = async () => {
       try {
         const response = await fetch(
-          `http://localhost:8000/api/admin/tags/search?query=${tagInput}`,
+          `REACT_APP_API_BASE_URL/api/admin/tags/search?query=${tagInput}`,
           {
             method: "GET",
             headers: {
@@ -64,7 +64,7 @@ const UserProfileModal: React.FC<UserProfileModalProps> = ({
           }
         );
         const data = await response.json();
-        
+
         setSuggestedTags(data.tags || []);
       } catch (error) {
         console.error("Error fetching tags:", error);
@@ -79,7 +79,7 @@ const UserProfileModal: React.FC<UserProfileModalProps> = ({
     const fetchCatalog = async () => {
       try {
         const response = await fetch(
-          `http://localhost:8000/api/admin/tags`, // Adjust the endpoint if necessary
+          `REACT_APP_API_BASE_URL/api/admin/tags`, // Adjust the endpoint if necessary
           {
             method: "GET",
             headers: {
@@ -108,9 +108,9 @@ const UserProfileModal: React.FC<UserProfileModalProps> = ({
     };
 
     try {
-      
+
       const response = await fetch(
-        `http://localhost:8000/api/admin/updateUser/${user.id}`,
+        `REACT_APP_API_BASE_URL/api/admin/updateUser/${user.id}`,
         {
           method: "PUT",
           headers: {
@@ -144,7 +144,7 @@ const UserProfileModal: React.FC<UserProfileModalProps> = ({
     if (!tagCatalog.includes(tag)) {
       try {
         const response = await fetch(
-          `http://localhost:8000/api/admin/tags`,
+          `REACT_APP_API_BASE_URL/api/admin/tags`,
           {
             method: "POST",
             headers: {
@@ -167,14 +167,14 @@ const UserProfileModal: React.FC<UserProfileModalProps> = ({
   const addUserTags = async (tag: string) => {
     try {
       const response = await fetch(
-        `http://localhost:8000/api/admin/users/${user.id}/tags`,
+        `REACT_APP_API_BASE_URL/api/admin/users/${user.id}/tags`,
         {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
             Authorization: `Bearer ${token}`,
           },
-          body: JSON.stringify({ tags:tag }),
+          body: JSON.stringify({ tags: tag }),
         }
       );
 

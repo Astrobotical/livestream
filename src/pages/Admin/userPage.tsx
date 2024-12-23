@@ -22,7 +22,7 @@ const UsersPage = () => {
   useEffect(() => {
     const fetchUsers = async () => {
       try {
-        const response = await fetch("http://localhost:8000/api/admin/getUsers", {
+        const response = await fetch("REACT_APP_API_BASE_URL/api/admin/getUsers", {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
@@ -48,7 +48,7 @@ const UsersPage = () => {
     const fetchTags = async () => {
       try {
         const response = await fetch(
-          `http://localhost:8000/api/tags?query=${tagSearch}`,
+          `REACT_APP_API_BASE_URL/api/tags?query=${tagSearch}`,
           {
             method: "GET",
             headers: {
@@ -114,21 +114,21 @@ const UsersPage = () => {
     setLoading(true);
     setUsers([]);
     try {
-      
+
       console.log("Recalling updates"); // Check updated user data
-          const response = await fetch("http://localhost:8000/api/admin/getUsers", {
-            method: "GET",
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: `Bearer ${tokenSaved}`,
-            },
-          });
-          const data = await response.json();
-          
-          setUsers(data);
-          setLoading(false);
-        
-        handleCloseProfileModal();
+      const response = await fetch("REACT_APP_API_BASE_URL/api/admin/getUsers", {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${tokenSaved}`,
+        },
+      });
+      const data = await response.json();
+
+      setUsers(data);
+      setLoading(false);
+
+      handleCloseProfileModal();
 
     } catch (error) {
       console.error("update failed:", error);
@@ -137,8 +137,8 @@ const UsersPage = () => {
 
   const filteredUsers = users.filter((user) => {
     if (statusFilter === "All") return true;
-    if(statusFilter === "admin" || statusFilter === "Admin") return user.status.includes("admin");
-    if(statusFilter === "banned" || statusFilter === "Banned") return user.status.includes("banned");
+    if (statusFilter === "admin" || statusFilter === "Admin") return user.status.includes("admin");
+    if (statusFilter === "banned" || statusFilter === "Banned") return user.status.includes("banned");
     return user.status.includes(statusFilter);
   });
 
@@ -237,11 +237,11 @@ const UsersPage = () => {
                               key={i}
                               className={clsx(
                                 "px-2 mx-1 py-1 rounded-full text-sm",
-                                statusTag === "Admin"||statusTag ==="admin"
+                                statusTag === "Admin" || statusTag === "admin"
                                   ? "bg-blue-500 text-white"
-                                  : statusTag === "Banned"||statusTag === "banned"
-                                  ? "bg-red-500 text-white"
-                                  : "bg-green-500 text-white"
+                                  : statusTag === "Banned" || statusTag === "banned"
+                                    ? "bg-red-500 text-white"
+                                    : "bg-green-500 text-white"
                               )}
                             >
                               {statusTag}

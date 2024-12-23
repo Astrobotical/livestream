@@ -31,7 +31,7 @@ const DashboardPage = () => {
   const customData = generateRandomData(10, 300); // Example custom range data
 
   const fetchDashboardData = async () => {
-    const response = await fetch("http://localhost:8000/api/admin/getStreams", {
+    const response = await fetch("REACT_APP_API_BASE_URL/api/admin/getStreams", {
       headers: { Authorization: `Bearer ${tokenSaved}` },
     });
     if (response.ok) {
@@ -41,7 +41,7 @@ const DashboardPage = () => {
   };
 
   const fetchViewers = async () => {
-    const response = await fetch("http://localhost:8000/api/admin/getUsers", {
+    const response = await fetch("REACT_APP_API_BASE_URL/api/admin/getUsers", {
       headers: { Authorization: `Bearer ${tokenSaved}` },
     });
     if (response.ok) {
@@ -61,12 +61,12 @@ const DashboardPage = () => {
       selectedTab === "Monthly"
         ? Array.from({ length: new Date(selectedYear, selectedMonth, 0).getDate() }, (_, i) => (i + 1).toString()) // Days of the month
         : selectedTab === "Yearly"
-        ? ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]
-        : selectedTab === "All Time"
-        ? Array.from({ length: new Date().getFullYear() - 2015 + 1 }, (_, i) => (2015 + i).toString())
-        : startDate && endDate
-        ? [`${startDate.toLocaleDateString()} - ${endDate.toLocaleDateString()}`]
-        : [],
+          ? ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]
+          : selectedTab === "All Time"
+            ? Array.from({ length: new Date().getFullYear() - 2015 + 1 }, (_, i) => (2015 + i).toString())
+            : startDate && endDate
+              ? [`${startDate.toLocaleDateString()} - ${endDate.toLocaleDateString()}`]
+              : [],
     datasets: [
       {
         label: `${selectedTab} Streams`,
@@ -74,10 +74,10 @@ const DashboardPage = () => {
           selectedTab === "Monthly"
             ? monthlyData
             : selectedTab === "Yearly"
-            ? yearlyData
-            : selectedTab === "All Time"
-            ? allTimeData
-            : customData,
+              ? yearlyData
+              : selectedTab === "All Time"
+                ? allTimeData
+                : customData,
         backgroundColor: "rgba(54, 162, 235, 0.5)",
         borderColor: "rgba(54, 162, 235, 1)",
         borderWidth: 1,
@@ -155,7 +155,7 @@ const DashboardPage = () => {
         {isModalOpen && (
           <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
             <div className="bg-gray-800 p-6 rounded-lg shadow-md w-96 relative">
-              
+
               {/* Modal Header with Close Button */}
               <div className="flex justify-between items-center mb-4">
                 <h2 className="text-xl text-white">Select Custom Date Range</h2>

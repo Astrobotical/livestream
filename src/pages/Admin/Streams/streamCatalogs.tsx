@@ -8,15 +8,15 @@ const StreamCatalog = () => {
   const tokenSaved = useSelector((state: RootState) => state.auth.token);
   const [streams, setStreams] = useState<streamModel[]>([]);
   const [isOpen, setIsOpen] = useState(false);
-  const [filter, setFilter]= useState('Filter');
+  const [filter, setFilter] = useState('Filter');
   const toggleDropdown = () => {
     setIsOpen(!isOpen);
   };
 
-  const getStreamsByFilter = async (filter:string|null)=>{
+  const getStreamsByFilter = async (filter: string | null) => {
     const url = filter
-    ? `http://localhost:8000/api/admin/getStreams?filter=${filter}`
-    : 'http://localhost:8000/api/admin/getStreams';
+      ? `REACT_APP_API_BASE_URL/api/admin/getStreams?filter=${filter}`
+      : 'REACT_APP_API_BASE_URL/api/admin/getStreams';
     const response = await fetch(url, {
       method: 'GET',
       headers: {
@@ -24,20 +24,20 @@ const StreamCatalog = () => {
         'Authorization': `Bearer ${tokenSaved}`,
       },
     });
-    if(response.ok){
+    if (response.ok) {
       const data = await response.json();
       console.log(data);
       setStreams(data);
     }
   }
 
-  const handleFilterOptions = (when:string)=>{
-    switch(when){
+  const handleFilterOptions = (when: string) => {
+    switch (when) {
       case "Future":
         setFilter('Future Streams');
         getStreamsByFilter('Future');
         toggleDropdown();
-      break;
+        break;
       case "Past":
         setFilter('Past Streams');
         getStreamsByFilter('Past');
@@ -52,7 +52,7 @@ const StreamCatalog = () => {
   }
 
   const startStream = async (streamId: number) => {
-    const response = await fetch(`http://localhost:8000/api/admin/startStream/${streamId}`, {
+    const response = await fetch(`REACT_APP_API_BASE_URL/api/admin/startStream/${streamId}`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -61,7 +61,7 @@ const StreamCatalog = () => {
     });
     if (response.ok) {
       // Update the streams list or state to reflect the stream status
-      Alert({type:'Updated',title:'Stream Started',message:'Stream has been started successfully', userID: 'someUserID', token: tokenSaved});
+      Alert({ type: 'Updated', title: 'Stream Started', message: 'Stream has been started successfully', userID: 'someUserID', token: tokenSaved });
       const updatedStream = await response.json();
       setStreams((prevStreams) =>
         prevStreams.map((stream) =>
@@ -74,22 +74,22 @@ const StreamCatalog = () => {
   }
 
   useEffect(() => {
-    const getStreams = async () =>{
-      const response = await fetch('http://localhost:8000/api/admin/getStreams', {
+    const getStreams = async () => {
+      const response = await fetch('REACT_APP_API_BASE_URL/api/admin/getStreams', {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${tokenSaved}`,
         },
       });
-      if(response.ok){
+      if (response.ok) {
         const data = await response.json();
         console.log(data);
         setStreams(data);
       }
     }
     getStreams();
-  },[tokenSaved]);
+  }, [tokenSaved]);
 
   return (
     <div className="p-8">
@@ -98,8 +98,8 @@ const StreamCatalog = () => {
 
         {/* Dropdown Menu */}
         <div className="relative">
-          <button 
-            onClick={toggleDropdown} 
+          <button
+            onClick={toggleDropdown}
             className="bg-gray-700 text-white mb-6 font-semibold py-2 px-4 rounded inline-flex items-center"
           >
             <span className='text-2xl'>{filter}</span>
@@ -111,9 +111,9 @@ const StreamCatalog = () => {
           {/* Dropdown content */}
           {isOpen && (
             <ul className="absolute right-0  bg-white text-gray-700 shadow-lg rounded-lg w-48">
-              <li className="hover:bg-gray-400 py-2 px-4 block cursor-pointer" onClick={()=>handleFilterOptions("Future")} >Upcoming Streams</li>
-              <li className="hover:bg-gray-400 py-2 px-4 block cursor-pointer"  onClick={()=>handleFilterOptions("Past")} >Past Streams</li>
-              <li className="hover:bg-gray-400 py-2 px-4 block cursor-pointer"  onClick={()=>handleFilterOptions("All")} >All Streams</li>
+              <li className="hover:bg-gray-400 py-2 px-4 block cursor-pointer" onClick={() => handleFilterOptions("Future")} >Upcoming Streams</li>
+              <li className="hover:bg-gray-400 py-2 px-4 block cursor-pointer" onClick={() => handleFilterOptions("Past")} >Past Streams</li>
+              <li className="hover:bg-gray-400 py-2 px-4 block cursor-pointer" onClick={() => handleFilterOptions("All")} >All Streams</li>
             </ul>
           )}
         </div>

@@ -3,7 +3,7 @@ import Livestream from './Livestream';
 import Buttons from './Buttons';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../redux/store';
-import {echo} from '../../echo'; // Ensure the echo import path is correct
+import { echo } from '../../echo'; // Ensure the echo import path is correct
 
 const MainScreen = () => {
   const tokenSaved = useSelector((state: RootState) => state.auth.token);
@@ -41,7 +41,7 @@ const MainScreen = () => {
     document.title = "Watch | Stream";
 
     const getTodaysStream = async () => {
-      const response = await fetch('http://localhost:8000/api/getNextStream', {
+      const response = await fetch('REACT_APP_API_BASE_URL/api/getNextStream', {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',

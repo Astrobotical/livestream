@@ -4,7 +4,7 @@ import { FaEyeSlash } from "react-icons/fa6";
 import { FaEye } from "react-icons/fa";
 import { FcGoogle } from "react-icons/fc";
 import DOMPurify from 'dompurify';
-import { useDispatch} from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { logIn } from '../../redux/userSlice';
 import { setToken } from '../../redux/authSlice';
 const LoginPage = () => {
@@ -18,67 +18,67 @@ const LoginPage = () => {
   useEffect(() => {
     document.title = "Login | Yardie";
   }
-  , []);
-  const handleUserSignup = async (e: React.FormEvent)=>{
+    , []);
+  const handleUserSignup = async (e: React.FormEvent) => {
     e.preventDefault();
-   //  const sanitizedPassword = password;
+    //  const sanitizedPassword = password;
     const sanizatedEmail = DOMPurify.sanitize(email);
 
-    try{
-     const response =  await fetch('http://localhost:8000/api/auth/signup', {
-      method: 'POST',
-      headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({email:sanizatedEmail,password:password}),
-    });
-    if(!response.ok){}
-      switch(response.status){
+    try {
+      const response = await fetch('REACT_APP_API_BASE_URL/api/auth/signup', {
+        method: 'POST',
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ email: sanizatedEmail, password: password }),
+      });
+      if (!response.ok) { }
+      switch (response.status) {
         case 201:
-        console.log(response.body);
-        const data = await response.json();
-        dispatch(logIn({ token: data.token, user: data.userRole,userID: data.userID}));
+          console.log(response.body);
+          const data = await response.json();
+          dispatch(logIn({ token: data.token, user: data.userRole, userID: data.userID }));
           navigate('/');
-        break;
+          break;
         case 204:
           setStatus(false);
-        break;
+          break;
       }
-    }catch(error){
+    } catch (error) {
 
     }
-    
+
   }
-  const handleUserLogin = async (e: React.FormEvent)=>{
+  const handleUserLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     const sanitizedPassword = password;
     const sanizatedEmail = DOMPurify.sanitize(email);
 
-    try{
-     const response =  await fetch('http://localhost:8000/api/auth/login', {
-      method: 'POST',
-      headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({email:sanizatedEmail,password:sanitizedPassword}),
-    });
-    if(!response.ok){}
-      switch(response.status){
+    try {
+      const response = await fetch('REACT_APP_API_BASE_URL/api/auth/login', {
+        method: 'POST',
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ email: sanizatedEmail, password: sanitizedPassword }),
+      });
+      if (!response.ok) { }
+      switch (response.status) {
         case 200:
           const data = await response.json();
           console.log(data.token);
           setStatus(true)
-          logIn({ token: data.token, user: data.userRole, userID: data.userID}) //Entry for token will be removed
+          logIn({ token: data.token, user: data.userRole, userID: data.userID }) //Entry for token will be removed
           dispatch(setToken(data.token));
           navigate('/');
-        break;
+          break;
         case 204:
           setStatus(false);
-        break;
+          break;
       }
-    }catch(error){
+    } catch (error) {
 
     }
 
@@ -91,7 +91,7 @@ const LoginPage = () => {
     const loginData = { email, password };
     //console.log('Login submitted:', loginData);
     try {
-      const response = await fetch('http://localhost:8000/api/auth/validate', {
+      const response = await fetch('REACT_APP_API_BASE_URL/api/auth/validate', {
         method: 'POST',
         headers: {
           'Accept': 'application/json',
@@ -100,18 +100,18 @@ const LoginPage = () => {
         body: JSON.stringify(loginData),
       });
       setCheckUser(true);
-      if(!response.ok){}
-      switch(response.status){
+      if (!response.ok) { }
+      switch (response.status) {
         case 200:
           setStatus(true)
-        break;
+          break;
         case 204:
           setStatus(false);
-        break;
+          break;
       }
-   
+
     } catch (error) {
-     
+
     }
   };
 
@@ -124,7 +124,7 @@ const LoginPage = () => {
         <h2 className="text-2xl font-bold mb-6 text-center text-white">User Authentication</h2>
 
         {/* Form */}
-        <form onSubmit={checkedUser ? hasAccount ? handleUserLogin:handleUserSignup:handleSubmit} className="space-y-4 ">
+        <form onSubmit={checkedUser ? hasAccount ? handleUserLogin : handleUserSignup : handleSubmit} className="space-y-4 ">
           <div>
             <label className="block text-white mb-2">Email</label>
             <input

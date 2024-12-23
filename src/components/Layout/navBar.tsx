@@ -85,7 +85,7 @@ const NavBar = () => {
 
   const checkingToken = useCallback(async () => {
     try {
-      const response = await fetch("http://localhost:8000/api/auth/verify", {
+      const response = await fetch("REACT_APP_API_BASE_URL/api/auth/verify", {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
@@ -147,11 +147,11 @@ const NavBar = () => {
 
         {/* Mobile Hamburger Menu Icon */}
         <div className="navbar-end md:hidden">
-        
-              <span className="text-white btn btn-ghost cursor-not-allowed" >
-                V-1.0
-              </span>
-            
+
+          <span className="text-white btn btn-ghost cursor-not-allowed" >
+            V-1.0
+          </span>
+
           <button
             className="btn text-white btn-square btn-ghost"
             onClick={toggleMenu}
