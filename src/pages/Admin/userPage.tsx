@@ -22,7 +22,7 @@ const UsersPage = () => {
   useEffect(() => {
     const fetchUsers = async () => {
       try {
-        const response = await fetch("REACT_APP_API_BASE_URL/api/admin/getUsers", {
+        const response = await fetch("`https://livestreamdemo.romarioburke.me/api/admin/getUsers", {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
@@ -48,7 +48,7 @@ const UsersPage = () => {
     const fetchTags = async () => {
       try {
         const response = await fetch(
-          `REACT_APP_API_BASE_URL/api/tags?query=${tagSearch}`,
+          `https://livestreamdemo.romarioburke.me/ / api / tags ? query = ${tagSearch}`,
           {
             method: "GET",
             headers: {
@@ -116,7 +116,7 @@ const UsersPage = () => {
     try {
 
       console.log("Recalling updates"); // Check updated user data
-      const response = await fetch("REACT_APP_API_BASE_URL/api/admin/getUsers", {
+      const response = await fetch(`https://livestreamdemo.romarioburke.me/api/admin/getUsers`, {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
@@ -147,7 +147,7 @@ const UsersPage = () => {
     const day = date.getDate().toString().padStart(2, "0");
     const month = (date.getMonth() + 1).toString().padStart(2, "0");
     const year = date.getFullYear();
-    return `${day}/${month}/${year}`;
+    return `${day} / ${month} / ${year}`;
   };
 
   return (

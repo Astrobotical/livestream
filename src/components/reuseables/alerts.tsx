@@ -37,7 +37,7 @@ const Alert = async (options: AlertOptions) => {
     Swal.isLoading()
     Swal.showLoading()
     const response = await fetch(
-      'REACT_APP_API_BASE_URL/api/admin/banUser', {
+      `https://livestreamdemo.romarioburke.me/api/admin/banUser`, {
       method: 'POST',
       headers: {
         'Accept': 'application/json',

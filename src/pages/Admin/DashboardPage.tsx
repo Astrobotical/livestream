@@ -31,7 +31,7 @@ const DashboardPage = () => {
   const customData = generateRandomData(10, 300); // Example custom range data
 
   const fetchDashboardData = async () => {
-    const response = await fetch("REACT_APP_API_BASE_URL/api/admin/getStreams", {
+    const response = await fetch("`https://livestreamdemo.romarioburke.me/api/admin/getStreams", {
       headers: { Authorization: `Bearer ${tokenSaved}` },
     });
     if (response.ok) {
@@ -41,7 +41,7 @@ const DashboardPage = () => {
   };
 
   const fetchViewers = async () => {
-    const response = await fetch("REACT_APP_API_BASE_URL/api/admin/getUsers", {
+    const response = await fetch("`https://livestreamdemo.romarioburke.me/api/admin/getUsers", {
       headers: { Authorization: `Bearer ${tokenSaved}` },
     });
     if (response.ok) {

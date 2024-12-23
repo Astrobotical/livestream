@@ -54,7 +54,7 @@ const UserProfileModal: React.FC<UserProfileModalProps> = ({
     const fetchTags = async () => {
       try {
         const response = await fetch(
-          `REACT_APP_API_BASE_URL/api/admin/tags/search?query=${tagInput}`,
+          `https://livestreamdemo.romarioburke.me/ / api / admin / tags / search ? query = ${tagInput}`,
           {
             method: "GET",
             headers: {
@@ -79,7 +79,7 @@ const UserProfileModal: React.FC<UserProfileModalProps> = ({
     const fetchCatalog = async () => {
       try {
         const response = await fetch(
-          `REACT_APP_API_BASE_URL/api/admin/tags`, // Adjust the endpoint if necessary
+          `https://livestreamdemo.romarioburke.me/api/admin/tags`, // Adjust the endpoint if necessary
           {
             method: "GET",
             headers: {
@@ -110,7 +110,7 @@ const UserProfileModal: React.FC<UserProfileModalProps> = ({
     try {
 
       const response = await fetch(
-        `REACT_APP_API_BASE_URL/api/admin/updateUser/${user.id}`,
+        `https://livestreamdemo.romarioburke.me/api/admin/updateUser/ ${user.id}`,
         {
           method: "PUT",
           headers: {
@@ -144,7 +144,7 @@ const UserProfileModal: React.FC<UserProfileModalProps> = ({
     if (!tagCatalog.includes(tag)) {
       try {
         const response = await fetch(
-          `REACT_APP_API_BASE_URL/api/admin/tags`,
+          `https://livestreamdemo.romarioburke.me/api/admin/tags`,
           {
             method: "POST",
             headers: {
@@ -167,7 +167,7 @@ const UserProfileModal: React.FC<UserProfileModalProps> = ({
   const addUserTags = async (tag: string) => {
     try {
       const response = await fetch(
-        `REACT_APP_API_BASE_URL/api/admin/users/${user.id}/tags`,
+        `https://livestreamdemo.romarioburke.me/ / api / admin / users / ${user.id} / tags`,
         {
           method: "POST",
           headers: {

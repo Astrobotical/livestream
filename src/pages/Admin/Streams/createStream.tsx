@@ -46,7 +46,7 @@ const CreateStreamPage = () => {
     };
     //  alert(`Scheduled Stream Data: ${formData.date}`);
 
-    const response = await fetch('REACT_APP_API_BASE_URL/api/admin/schedule', {
+    const response = await fetch(`https://livestreamdemo.romarioburke.me/api/admin/schedule`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

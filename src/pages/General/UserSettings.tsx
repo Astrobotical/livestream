@@ -24,7 +24,7 @@ const SettingsPage = () => {
     document.title = "Watch | Stream";
 
     const getUserInfo = async () => {
-      const response = await fetch('REACT_APP_API_BASE_URL/api/user/get', {
+      const response = await fetch(`https://livestreamdemo.romarioburke.me/api/user/get`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
@@ -53,7 +53,7 @@ const SettingsPage = () => {
     // Set a new timeout to handle user "done typing"
     const timeoutId = window.setTimeout(async () => {
       console.log('User finished typing:', inputValue);
-      const response = await fetch('REACT_APP_API_BASE_URL/api/user/checkpassword', {
+      const response = await fetch(`https://livestreamdemo.romarioburke.me/ / api / user / checkpassword`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -81,7 +81,7 @@ const SettingsPage = () => {
   }
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    const response = await fetch('REACT_APP_API_BASE_URL/api/user/update', {
+    const response = await fetch(`https://livestreamdemo.romarioburke.me/api/user/update`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',

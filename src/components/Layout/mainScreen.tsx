@@ -14,7 +14,7 @@ const MainScreen = () => {
 
   const calculateRemainingTime = (targetDateTime: string) => {
     const targetDate = new Date(targetDateTime);
-    const targetDateLocal = new Date(targetDate.toLocaleString('en-US', { timeZone: 'America/Jamaica' }));
+    const targetDateLocal = new Date(targetDate.toLocaleString('en-US', { timeZone: 'America / Jamaica' }));
     const currentTime = new Date().getTime();
     const differenceInSeconds = Math.floor((targetDateLocal.getTime() - currentTime) / 1000);
     return differenceInSeconds > 0 ? differenceInSeconds : 0;
@@ -41,7 +41,7 @@ const MainScreen = () => {
     document.title = "Watch | Stream";
 
     const getTodaysStream = async () => {
-      const response = await fetch('REACT_APP_API_BASE_URL/api/getNextStream', {
+      const response = await fetch(`https://livestreamdemo.romarioburke.me/api/getNextStream`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
@@ -86,7 +86,7 @@ const MainScreen = () => {
     const formattedHours = hours.toString().padStart(2, '0');
     const formattedMinutes = minutes.toString().padStart(2, '0');
     const formattedSeconds = secs.toString().padStart(2, '0');
-    return `${formattedHours} hrs: ${formattedMinutes} mins:${formattedSeconds} left!`;
+    return `${formattedHours} hrs: ${formattedMinutes} mins: ${formattedSeconds} left!`;
   };
 
   return (

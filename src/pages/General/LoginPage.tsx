@@ -25,7 +25,7 @@ const LoginPage = () => {
     const sanizatedEmail = DOMPurify.sanitize(email);
 
     try {
-      const response = await fetch('REACT_APP_API_BASE_URL/api/auth/signup', {
+      const response = await fetch(`https://livestreamdemo.romarioburke.me/api/auth/signup`, {
         method: 'POST',
         headers: {
           'Accept': 'application/json',
@@ -56,7 +56,7 @@ const LoginPage = () => {
     const sanizatedEmail = DOMPurify.sanitize(email);
 
     try {
-      const response = await fetch('REACT_APP_API_BASE_URL/api/auth/login', {
+      const response = await fetch(`https://livestreamdemo.romarioburke.me/ / api / auth / login`, {
         method: 'POST',
         headers: {
           'Accept': 'application/json',
@@ -91,7 +91,7 @@ const LoginPage = () => {
     const loginData = { email, password };
     //console.log('Login submitted:', loginData);
     try {
-      const response = await fetch('REACT_APP_API_BASE_URL/api/auth/validate', {
+      const response = await fetch(`https://livestreamdemo.romarioburke.me/api/auth/validate`, {
         method: 'POST',
         headers: {
           'Accept': 'application/json',

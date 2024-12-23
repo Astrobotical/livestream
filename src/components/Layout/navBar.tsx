@@ -85,7 +85,7 @@ const NavBar = () => {
 
   const checkingToken = useCallback(async () => {
     try {
-      const response = await fetch("REACT_APP_API_BASE_URL/api/auth/verify", {
+      const response = await fetch("`https://livestreamdemo.romarioburke.me/api/auth/verify", {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
@@ -183,16 +183,6 @@ const NavBar = () => {
             </li>
             <li>
               <button
-                onClick={() => handleLinkClick("/about")}
-                className={clsx("text-white btn btn-ghost", {
-                  active: activeLink === "/about",
-                })}
-              >
-                About
-              </button>
-            </li>
-            <li>
-              <button
                 onClick={() => handleLinkClick("/gallery")}
                 className={clsx("text-white btn btn-ghost", {
                   active: activeLink === "/gallery",
@@ -225,17 +215,6 @@ const NavBar = () => {
         >
           {menuOpen && (
             <ul className="menu menu-vertical p-2 z-50">
-
-              <li>
-                <button
-                  onClick={() => handleLinkClick("/about")}
-                  className={clsx("text-white btn btn-ghost", {
-                    active: activeLink === "/about",
-                  })}
-                >
-                  About
-                </button>
-              </li>
               <li>
                 <button
                   onClick={() => handleLinkClick("/gallery")}
