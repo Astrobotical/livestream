@@ -29,6 +29,7 @@ const userSlice = createSlice({
     logOut: (state) => {
       state.isLoggedIn = false;
       state.hasPaid = false;
+      
     },
     markAsPaid: (state) => {
       state.hasPaid = true;

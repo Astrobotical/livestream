@@ -74,7 +74,6 @@ const MainScreen = () => {
         clearInterval(countdownRef.current);
       }
     };
-  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [tokenSaved]); // Run only once when tokenSaved is available
   
     // Function to format countdown time (minutes:seconds)

@@ -11,12 +11,12 @@ const GalleryPage = () => {
   
     // Images array
     const images = [
-      'https://post.healthline.com/wp-content/uploads/2019/10/rambutan-exotic-fruit-1296x728-header-1296x728.jpg',
-      'https://post.healthline.com/wp-content/uploads/2019/10/rambutan-exotic-fruit-1296x728-header-1296x728.jpg',
-      'https://post.healthline.com/wp-content/uploads/2019/10/rambutan-exotic-fruit-1296x728-header-1296x728.jpg',
-      'https://post.healthline.com/wp-content/uploads/2019/10/rambutan-exotic-fruit-1296x728-header-1296x728.jpg',
-      'https://post.healthline.com/wp-content/uploads/2019/10/rambutan-exotic-fruit-1296x728-header-1296x728.jpg',
-      'https://post.healthline.com/wp-content/uploads/2019/10/rambutan-exotic-fruit-1296x728-header-1296x728.jpg',
+      'https://jamaicans.com/wp-content/uploads/2016/08/Jamaica-Tourist-Board-Olympic-Watch-Party-Pembroke-Pines.jpg',
+      'https://media.istockphoto.com/id/472046721/photo/street-party-in-ghetto.jpg?s=2048x2048&w=is&k=20&c=ZUjqjPlAW07YkkQYXLBO2eSLYznmA9DGOswGKaiEWKM=',
+      'https://media.istockphoto.com/id/139375643/photo/rave-scape.jpg?s=2048x2048&w=is&k=20&c=SOM718iojrKE8apY--I7xsBdZBDGM1qkw9P-6cT-Tio=',
+      'https://media.istockphoto.com/id/1203947225/photo/people-celebrating-and-dancing-brazilian-carnival.jpg?s=1024x1024&w=is&k=20&c=wXJkEV4-uyFoPd4NIfUxbZWhY7bz2wA-dUHE_U1_Y0M=',
+      'https://media.istockphoto.com/id/1203650291/photo/people-celebrating-and-dancing-brazilian-carnival.jpg?s=1024x1024&w=is&k=20&c=Bs4hyIxTav2AWvFeh9heg47FLAPnlOXBU32DYdsobbY=',
+      'https://media.istockphoto.com/id/1203945942/photo/people-celebrating-and-dancing-brazilian-carnival.jpg?s=2048x2048&w=is&k=20&c=YZUGbZ_7nUKJpSLm3YysfGsblxpvlkHzpc7lxUKvCCI=',
     ];
   
     // Open the modal with the clicked image
@@ -75,6 +75,4 @@ const GalleryPage = () => {
       </div>
     );
   };
-  
-
 export default GalleryPage;

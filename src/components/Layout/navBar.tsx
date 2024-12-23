@@ -1,84 +1,157 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback, memo } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../redux/store";
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import clsx from "clsx";
 import { setToken, clearToken } from "../../redux/authSlice";
 import { logIn, logOut } from "../../redux/userSlice";
+
+interface AccountMenuProps {
+  isAdmin: boolean;
+  userLoggedIn: boolean;
+  handleLinkClick: (link: string) => void;
+  toggleDropdown: () => void;
+  isDropdownOpen: boolean;
+}
+
+const AccountMenu = memo(({ isAdmin, userLoggedIn, handleLinkClick, toggleDropdown, isDropdownOpen }: AccountMenuProps) => {
+  if (!userLoggedIn) {
+    return (
+      <button
+        onClick={() => handleLinkClick("/login")}
+        className="text-white btn btn-ghost"
+      >
+        Login
+      </button>
+    );
+  }
+
+  return (
+    <details
+      open={isDropdownOpen}
+      onClick={(e) => e.preventDefault()} // Prevent native toggle behavior
+      className="relative"
+    >
+      <summary
+        onClick={toggleDropdown}
+        className="btn btn-ghost py-4 text-white cursor-pointer"
+      >
+        Account
+      </summary>
+      <ul className="absolute right-0 bg-gray-800 rounded shadow-lg p-2 z-50">
+        {isAdmin ? (
+          <>
+            <li>
+              <button
+                onClick={() => handleLinkClick("/dashboard")}
+                className="text-white btn btn-ghost"
+              >
+                Admin Panel
+              </button>
+            </li>
+          </>
+        ) : (
+          <li>
+            <button
+              onClick={() => handleLinkClick("/profile")}
+              className="text-white btn btn-ghost"
+            >
+              Profile
+            </button>
+          </li>
+        )}
+        <li>
+          <button
+            onClick={() => handleLinkClick("/logout")}
+            className="text-white btn btn-ghost"
+          >
+            Logout
+          </button>
+        </li>
+      </ul>
+    </details>
+  );
+});
+
 const NavBar = () => {
   const [menuOpen, setMenuOpen] = useState(false);
   const [activeLink, setActiveLink] = useState("");
-  const [isMiniActive, setMiniStatus] = useState(false);
-  const userLoggedIn = useSelector((state: RootState) => state.user.isLoggedIn);
-  const isAdmin = useSelector((state: RootState) => state.user.isAdmin);
+  const [accountDropdownOpen, setAccountDropdownOpen] = useState(false);
   const dispatch = useDispatch();
   const tokenSaved = useSelector((state: RootState) => state.auth.token);
+  const userLoggedIn = useSelector((state: RootState) => state.user.isLoggedIn);
+  const isAdmin = useSelector((state: RootState) => state.user.isAdmin);
+  const navigate = useNavigate();
 
-  const toggleMenu = () => setMenuOpen(!menuOpen);
+  const checkingToken = useCallback(async () => {
+    try {
+      const response = await fetch("http://localhost:8000/api/auth/verify", {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${tokenSaved}`,
+        },
+      });
 
-  useEffect(() => {
-    const checkingToken = async () => {
-      const savedToken = tokenSaved || "";
-      try {
-        const response = await fetch("http://localhost:8000/api/auth/verify", {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${savedToken}`,
-          },
-        });
-        if (response.ok) {
-          const data = await response.json();
-          dispatch(
-            logIn({ token: savedToken, user: data.user, userID: data.userID })
-          );
-          dispatch(setToken(savedToken));
-        } else {
-          dispatch(clearToken());
-          dispatch(logOut());
+      if (response.ok) {
+        const data = await response.json();
+        if (tokenSaved) {
+          dispatch(logIn({ token: tokenSaved, user: data.user, userID: data.userID }));
         }
-      } catch (error) {
+        if (tokenSaved) {
+          dispatch(setToken(tokenSaved));
+        }
+      } else {
         dispatch(clearToken());
         dispatch(logOut());
       }
-    };
-
-    if (tokenSaved != null) {
-      checkingToken();
+    } catch (error) {
+      console.error("Token verification failed:", error);
+      dispatch(clearToken());
+      dispatch(logOut());
     }
   }, [tokenSaved, dispatch]);
 
+  useEffect(() => {
+    if (tokenSaved) checkingToken();
+  }, [tokenSaved, checkingToken]);
+
   const handleLinkClick = (link: string) => {
-    setActiveLink(link);
-    setMiniStatus(previousState => !previousState);
-    setMenuOpen(false); // Close the mobile menu after clicking
+    if (link === "/logout") {
+      dispatch(logOut());
+      dispatch(clearToken());
+      setAccountDropdownOpen(false);
+      navigate("/login");
+    } else {
+      setActiveLink(link);
+      navigate(link);
+    }
+    setMenuOpen(false);
+    setAccountDropdownOpen(false);
   };
 
-  const handleLogout = () => {
-    dispatch(logOut());
-  };
-  const toggleMiniBtn = () => {
-    console.log(`userLoggedIn ${userLoggedIn}`);
+  const toggleMenu = () => setMenuOpen((prev) => !prev);
+  const toggleDropdown = () => setAccountDropdownOpen((prev) => !prev);
 
-    setMiniStatus(previousState=> !previousState);
-    console.log(isMiniActive);
-    // setMenuOpen(!menuOpen)
-  }
   return (
     <nav>
       <div className="navbar bg-gray-800 relative">
         <div className="navbar-start">
-          <Link
-            to="/"
+          <button
             onClick={() => handleLinkClick("/")}
             className="btn btn-ghost text-xl text-white"
           >
             Yardie UI
-          </Link>
+          </button>
         </div>
 
         {/* Mobile Hamburger Menu Icon */}
         <div className="navbar-end md:hidden">
+        
+              <span className="text-white btn btn-ghost cursor-not-allowed" >
+                V-1.0
+              </span>
+            
           <button
             className="btn text-white btn-square btn-ghost"
             onClick={toggleMenu}
@@ -103,100 +176,39 @@ const NavBar = () => {
         {/* Desktop Menu */}
         <div className="navbar-end hidden md:flex">
           <ul className="menu menu-horizontal px-1">
-            <li className="text-white">
-              <Link
-                to="/about"
+            <li>
+              <span className="text-white btn btn-ghost cursor-not-allowed" >
+                V-1.0
+              </span>
+            </li>
+            <li>
+              <button
                 onClick={() => handleLinkClick("/about")}
                 className={clsx("text-white btn btn-ghost", {
                   active: activeLink === "/about",
                 })}
               >
                 About
-              </Link>
+              </button>
             </li>
-            <li className="text-white">
-              <Link
-                to="/gallery"
+            <li>
+              <button
                 onClick={() => handleLinkClick("/gallery")}
                 className={clsx("text-white btn btn-ghost", {
                   active: activeLink === "/gallery",
                 })}
               >
                 Gallery
-              </Link>
+              </button>
             </li>
-
-            <li className="text-white" onClick={() => toggleMiniBtn()}>
-              {userLoggedIn ? (
-                <details className="justify-items-center" >
-                  <summary className="text-white btn btn-ghost py-4">
-                    Account
-                  </summary>
-                  {isMiniActive && ( // Conditionally render the menu
-                    <ul
-                      className={clsx("bg-gray-800 rounded-t-none p-2 z-50", {
-                        hidden: !isMiniActive,
-                      })}
-
-                    >
-
-                      {isAdmin ? (
-                        <>
-                          <li>
-                            <Link
-                              to="/dashboard"
-                              onClick={() => handleLinkClick("/dashboard")}
-                              className={clsx("text-white", {
-                                active: activeLink === "/dashboard",
-                              })}
-                            >
-                              Admin Panel
-                            </Link>
-                          </li>
-                          <li>
-                            <Link
-                              to=""
-                              className="text-white btn btn-ghost"
-                              onClick={() => handleLinkClick("/settings")}
-                            >
-                              Settings
-                            </Link>
-                          </li>
-                        </>
-                      ) : (
-                        <li>
-                          <Link
-                            to=""
-                            className="text-white btn btn-ghost"
-                            onClick={() => handleLinkClick("/profile")}
-                          >
-                            Profile
-                          </Link>
-                        </li>
-                      )}
-                      <li>
-                        <Link
-                          to=""
-                          className="text-white btn btn-ghost"
-                          onClick={handleLogout}
-                        >
-                          Logout
-                        </Link>
-                      </li>
-                    </ul>
-                  )}
-                </details>
-              ) : (
-                <Link
-                  to="/login"
-                  onClick={() => handleLinkClick("/login")}
-                  className={clsx("text-white btn btn-ghost", {
-                    active: activeLink === "/login",
-                  })}
-                >
-                  Login
-                </Link>
-              )}
+            <li>
+              <AccountMenu
+                isAdmin={isAdmin}
+                userLoggedIn={userLoggedIn}
+                handleLinkClick={handleLinkClick}
+                toggleDropdown={toggleDropdown}
+                isDropdownOpen={accountDropdownOpen}
+              />
             </li>
           </ul>
         </div>
@@ -212,99 +224,36 @@ const NavBar = () => {
           )}
         >
           {menuOpen && (
-            <ul className="menu menu-vertical p-2  z-50">
+            <ul className="menu menu-vertical p-2 z-50">
+
               <li>
-                <Link
-                  to="/about"
+                <button
                   onClick={() => handleLinkClick("/about")}
                   className={clsx("text-white btn btn-ghost", {
                     active: activeLink === "/about",
                   })}
                 >
                   About
-                </Link>
+                </button>
               </li>
               <li>
-                <Link
-                  to="/gallery"
+                <button
                   onClick={() => handleLinkClick("/gallery")}
                   className={clsx("text-white btn btn-ghost", {
                     active: activeLink === "/gallery",
                   })}
                 >
                   Gallery
-                </Link>
+                </button>
               </li>
-              <li className="text-white">
-                {userLoggedIn ? (
-                  isAdmin ? (
-                    <details>
-                      <summary className="text-white">Account</summary>
-                      <ul className="bg-gray-800 rounded-t-none p-2">
-                        <li>
-                          <Link
-                            to="/dashboard"
-                            onClick={() => handleLinkClick("/dashboard")}
-                            className={clsx("text-white btn btn-ghost", {
-                              active: activeLink === "/dashboard",
-                            })}
-                          >
-                            Admin Panel
-                          </Link>
-                        </li>
-                        <li>
-                          <Link to="" className="text-white btn btn-ghost">
-                            Settings
-                          </Link>
-                        </li>
-                        <li>
-                          <Link
-                            to=""
-                            className="text-white btn btn-ghost"
-                            onClick={handleLogout}
-                          >
-                            Logout
-                          </Link>
-                        </li>
-                      </ul>
-                    </details>
-                  ) : (
-                    <details>
-                      <summary className="text-white btn btn-ghost">
-                        Account
-                      </summary>
-                      <ul className="bg-gray-800 rounded-t-none p-2">
-                        <li>
-                          <Link to="" className="text-white btn btn-ghost">
-                            Profile
-                          </Link>
-                        </li>
-                        <li>
-                          <Link to="" className="text-white btn btn-ghost">
-                            Settings
-                          </Link>
-                        </li>
-                        <li>
-                          <Link
-                            to=""
-                            className="text-white btn btn-ghost"
-                            onClick={handleLogout}
-                          >
-                            Logout
-                          </Link>
-                        </li>
-                      </ul>
-                    </details>
-                  )
-                ) : (
-                  <Link
-                    to="/login"
-                    onClick={() => handleLinkClick("/login")}
-                    className="text-white btn btn-ghost"
-                  >
-                    Login
-                  </Link>
-                )}
+              <li>
+                <AccountMenu
+                  isAdmin={isAdmin}
+                  userLoggedIn={userLoggedIn}
+                  handleLinkClick={handleLinkClick}
+                  toggleDropdown={toggleDropdown}
+                  isDropdownOpen={accountDropdownOpen}
+                />
               </li>
             </ul>
           )}
