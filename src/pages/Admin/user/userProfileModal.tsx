@@ -54,7 +54,7 @@ const UserProfileModal: React.FC<UserProfileModalProps> = ({
     const fetchTags = async () => {
       try {
         const response = await fetch(
-          `https://livestreamdemo.romarioburke.me/ / api / admin / tags / search ? query = ${tagInput}`,
+          `https://livestreamdemo.romarioburke.me/api/admin/tags/search?query=${tagInput}`,
           {
             method: "GET",
             headers: {
@@ -110,7 +110,7 @@ const UserProfileModal: React.FC<UserProfileModalProps> = ({
     try {
 
       const response = await fetch(
-        `https://livestreamdemo.romarioburke.me/api/admin/updateUser/ ${user.id}`,
+        `https://livestreamdemo.romarioburke.me/api/admin/updateUser/${user.id}`,
         {
           method: "PUT",
           headers: {
@@ -167,7 +167,7 @@ const UserProfileModal: React.FC<UserProfileModalProps> = ({
   const addUserTags = async (tag: string) => {
     try {
       const response = await fetch(
-        `https://livestreamdemo.romarioburke.me/ / api / admin / users / ${user.id} / tags`,
+        `https://livestreamdemo.romarioburke.me/ api / admin / users / ${user.id} / tags`,
         {
           method: "POST",
           headers: {

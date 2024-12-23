@@ -53,7 +53,7 @@ const SettingsPage = () => {
     // Set a new timeout to handle user "done typing"
     const timeoutId = window.setTimeout(async () => {
       console.log('User finished typing:', inputValue);
-      const response = await fetch(`https://livestreamdemo.romarioburke.me/ / api / user / checkpassword`, {
+      const response = await fetch(`https://livestreamdemo.romarioburke.me/ api / user / checkpassword`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

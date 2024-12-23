@@ -14,7 +14,7 @@ const MainScreen = () => {
 
   const calculateRemainingTime = (targetDateTime: string) => {
     const targetDate = new Date(targetDateTime);
-    const targetDateLocal = new Date(targetDate.toLocaleString('en-US', { timeZone: 'America / Jamaica' }));
+    const targetDateLocal = new Date(targetDate.toLocaleString('en-US', { timeZone: 'America/Jamaica' }));
     const currentTime = new Date().getTime();
     const differenceInSeconds = Math.floor((targetDateLocal.getTime() - currentTime) / 1000);
     return differenceInSeconds > 0 ? differenceInSeconds : 0;

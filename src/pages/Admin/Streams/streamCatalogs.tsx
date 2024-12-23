@@ -15,8 +15,8 @@ const StreamCatalog = () => {
 
   const getStreamsByFilter = async (filter: string | null) => {
     const url = filter
-      ? `https://livestreamdemo.romarioburke.me/api/admin / getStreams ? filter = ${filter} `
-      : '`${ process.env.REACT_APP_API_BASE_URL } /api/admin / getStreams';
+      ? `https://livestreamdemo.romarioburke.me/api/admin/getStreams?filter=${filter}`
+      : 'https://livestreamdemo.romarioburke.me/api/admin/getStreams';
     const response = await fetch(url, {
       method: 'GET',
       headers: {
@@ -75,7 +75,7 @@ const StreamCatalog = () => {
 
   useEffect(() => {
     const getStreams = async () => {
-      const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/api/admin/getStreams`, {
+      const response = await fetch(`https://livestreamdemo.romarioburke.me/api/admin/getStreams`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',

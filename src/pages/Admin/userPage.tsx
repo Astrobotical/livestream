@@ -48,7 +48,7 @@ const UsersPage = () => {
     const fetchTags = async () => {
       try {
         const response = await fetch(
-          `https://livestreamdemo.romarioburke.me/ / api / tags ? query = ${tagSearch}`,
+          `https://livestreamdemo.romarioburke.me/api/tags?query=${tagSearch}`,
           {
             method: "GET",
             headers: {
