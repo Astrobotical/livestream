@@ -37,6 +37,7 @@ const CreateStreamPage = () => {
       clearValues();
       // Handle the form submission
       const formData:streamModel = {
+        id: 0,
         title: 'title',
         description: 'something',
         stream_url: streamLink,

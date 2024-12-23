@@ -1,4 +1,5 @@
 interface streamModel{
+    id: number,
     title: string|null,
     description: string,
     stream_url: string,

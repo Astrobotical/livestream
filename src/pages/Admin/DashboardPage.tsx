@@ -1,159 +1,231 @@
-import React, { useEffect, useState } from 'react';
-import * as d3 from 'd3';
-import { ViewsCount, FollowersCount, MoneyMade } from './Dashboard/segments';
-import { Line } from 'react-chartjs-2'; // Importing Chart.js for line charts
-import { Bar } from 'react-chartjs-2'; // Importing Chart.js for bar charts
-import { Chart, CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend, PointElement, ArcElement, LineElement } from 'chart.js';
-import { useSelector } from 'react-redux';
-import { RootState } from '../../redux/store';
+import React, { useEffect, useState } from "react";
+import { Bar } from "react-chartjs-2";
+import { Chart, CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend } from "chart.js";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
+import { useSelector } from "react-redux";
+import { RootState } from "../../redux/store";
 
-// Register the necessary components
-Chart.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend, PointElement, ArcElement, LineElement);
+// Register Chart.js components
+Chart.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
 
-const generateRandomData = (length: number, max: number) => {
-  return Array.from({ length }, () => Math.floor(Math.random() * max) + 1);
-};
+const generateRandomData = (length: number, max: number) =>
+  Array.from({ length }, () => Math.floor(Math.random() * max) + 1);
 
 const DashboardPage = () => {
-  const [data, setData] = useState({
-    streams: generateRandomData(4, 10),
-    pageViews: generateRandomData(5, 100),
-    viewers: generateRandomData(5, 100),
-  });
-  const isAdmin = useSelector((state: RootState) => state.user.isAdmin);
-  const [isSidebarOpen, setIsSidebarOpen] = useState(true);
+  const tokenSaved = useSelector((state: RootState) => state.auth.token);
 
-  const toggleSidebar = () => {
-    setIsSidebarOpen(!isSidebarOpen);
+  const [streams, setStreams] = useState(0);
+  const [viewers, setViewers] = useState(0);
+  const [selectedTab, setSelectedTab] = useState("Monthly"); // Tabs: Monthly, Yearly, All Time, Custom
+  const [selectedMonth, setSelectedMonth] = useState(new Date().getMonth() + 1); // Current month
+  const [selectedYear, setSelectedYear] = useState(new Date().getFullYear()); // Current year
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [customDateRange, setCustomDateRange] = useState<[Date | null, Date | null]>([null, null]);
+  const [startDate, endDate] = customDateRange;
+
+  // Dummy data for graphs
+  const monthlyData = generateRandomData(31, 50);
+  const yearlyData = generateRandomData(12, 500); // Data for all months
+  const allTimeData = generateRandomData(new Date().getFullYear() - 2015 + 1, 1000);
+  const customData = generateRandomData(10, 300); // Example custom range data
+
+  const fetchDashboardData = async () => {
+    const response = await fetch("http://localhost:8000/api/admin/getStreams", {
+      headers: { Authorization: `Bearer ${tokenSaved}` },
+    });
+    if (response.ok) {
+      const streamsData = await response.json();
+      setStreams(streamsData.length);
+    }
   };
 
-  // Dummy data for charts
-  const lineChartData = {
-    labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
-    datasets: [
-      {
-        label: 'User Engagement',
-        data: [65, 59, 80, 81, 56, 55, 40],
-        fill: false,
-        backgroundColor: 'rgba(75,192,192,0.4)',
-        borderColor: 'rgba(75,192,192,1)',
-      },
-    ],
+  const fetchViewers = async () => {
+    const response = await fetch("http://localhost:8000/api/admin/getUsers", {
+      headers: { Authorization: `Bearer ${tokenSaved}` },
+    });
+    if (response.ok) {
+      const data = await response.json();
+      setViewers(data.length || 0);
+    }
   };
 
+  useEffect(() => {
+    fetchDashboardData();
+    fetchViewers();
+  }, [tokenSaved]);
+
+  // Configure Bar Chart Data
   const barChartData = {
-    labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
+    labels:
+      selectedTab === "Monthly"
+        ? Array.from({ length: new Date(selectedYear, selectedMonth, 0).getDate() }, (_, i) => (i + 1).toString()) // Days of the month
+        : selectedTab === "Yearly"
+        ? ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]
+        : selectedTab === "All Time"
+        ? Array.from({ length: new Date().getFullYear() - 2015 + 1 }, (_, i) => (2015 + i).toString())
+        : startDate && endDate
+        ? [`${startDate.toLocaleDateString()} - ${endDate.toLocaleDateString()}`]
+        : [],
     datasets: [
       {
-        label: '# of Votes',
-        data: [12, 19, 3, 5, 2, 3],
-        backgroundColor: [
-          'rgba(255, 99, 132, 0.2)',
-          'rgba(54, 162, 235, 0.2)',
-          'rgba(255, 206, 86, 0.2)',
-          'rgba(75, 192, 192, 0.2)',
-          'rgba(153, 102, 255, 0.2)',
-          'rgba(255, 159, 64, 0.2)',
-        ],
-        borderColor: [
-          'rgba(255, 99, 132, 1)',
-          'rgba(54, 162, 235, 1)',
-          'rgba(255, 206, 86, 1)',
-          'rgba(75, 192, 192, 1)',
-          'rgba(153, 102, 255, 1)',
-          'rgba(255, 159, 64, 1)',
-        ],
+        label: `${selectedTab} Streams`,
+        data:
+          selectedTab === "Monthly"
+            ? monthlyData
+            : selectedTab === "Yearly"
+            ? yearlyData
+            : selectedTab === "All Time"
+            ? allTimeData
+            : customData,
+        backgroundColor: "rgba(54, 162, 235, 0.5)",
+        borderColor: "rgba(54, 162, 235, 1)",
         borderWidth: 1,
       },
     ],
   };
-  useEffect(() => {
-    document.title = "Dashboard | Yardie";
-    if (data.streams.length && data.pageViews.length && data.viewers.length) {
-      createGraphs();
-    }
-  }, [data]);
 
-  const createGraphs = () => {
-    // Clear previous graphs
-    d3.select('#pageViewsGraph').selectAll('*').remove();
-    // Create Page Views Graph
-    const pageViewsSvg = d3.select('#pageViewsGraph')
-      .append('svg')
-      .attr('height', 500);
-
-    const pageViewsData = data.pageViews.map(
-      (value, index) => (
-        { name: `Page ${index + 1}`, value }));
-
-    const xScalePageViews = d3.scaleBand()
-      .domain(pageViewsData.map(d => d.name))
-      .range([0, 500])
-      .padding(0.1);
-
-    const yScalePageViews = d3.scaleLinear()
-      .domain([0, d3.max(pageViewsData, d => d.value) as number])
-      .range([300, 0]);
-
-    // Append the bars for the bar chart
-    pageViewsSvg.selectAll('.bar')
-      .data(pageViewsData)
-      .enter()
-      .append('rect')
-      .attr('class', 'bar')
-      .attr('x', d => xScalePageViews(d.name) as number)
-      .attr('y', d => yScalePageViews(d.value))
-      .attr('width', xScalePageViews.bandwidth())
-      .attr('height', d => 300 - yScalePageViews(d.value))
-      .attr('fill', 'steelblue');
-
-    // Append and style the x-axis
-    pageViewsSvg.append('g')
-      .attr('class', 'x-axis') // Add a class to target the x-axis labels later
-      .attr('transform', 'translate(0,300)')
-      .call(d3.axisBottom(xScalePageViews));
-
-    // Style the x-axis text labels after appending the axis
-    pageViewsSvg.selectAll('.x-axis text')
-      .style('fill', 'white')          // Change the label color to white// Rotate the labels
-      .attr('text-anchor', 'start');   // Align the rotated text to the start
-
-    // Append and styl e the y-axis
-    pageViewsSvg.append('g')
-      .call(d3.axisLeft(yScalePageViews).ticks(5));
-    // Create Viewers Graph
+  const handleDateChange = (dates: [Date | null, Date | null]) => {
+    setCustomDateRange(dates);
   };
-  //<div id="pageViewsGraph" className="mb-8 w-full"></div>
+
   return (
-    <main className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-    {/* Card 1 */}
-    <div className="bg-gray-800 p-4 rounded-lg shadow-md">
-      <h2 className="text-xl font-semibold text-white">Total Streams</h2>
-      <p className="text-3xl text-green-400">150</p>
-    </div>
-    {/* Card 2 */}
-    <div className="bg-gray-800 p-4 rounded-lg shadow-md">
-      <h2 className="text-xl font-semibold text-white">Total Users</h2>
-      <p className="text-3xl text-blue-400">75</p>
-    </div>
-    {/* Card 3 */}
-    <div className="bg-gray-800 p-4 rounded-lg shadow-md">
-      <h2 className="text-xl font-semibold text-white">Total Earned</h2>
-      <p className="text-3xl text-red-400">5</p>
-    </div>
-    {/* Line Chart */}
-    <div className="col-span-1 md:col-span-2 lg:col-span-3 bg-gray-800 p-4 rounded-lg shadow-md">
-      <h2 className="text-xl font-semibold text-white">User Engagement Over Time</h2>
-      <Line data={lineChartData} />
-    </div>
-    {/* Bar Chart */}
-    <div className="col-span-1 md:col-span-2 lg:col-span-3 bg-gray-800 p-4 rounded-lg shadow-md">
-      <h2 className="text-xl font-semibold text-white">Votes Distribution</h2>
-      <Bar data={barChartData} />
-    </div>
-  </main>
+    <main className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 p-4">
+      {/* Total Streams Card */}
+      <div className="bg-gray-800 p-4 rounded-lg shadow-md">
+        <h2 className="text-xl font-semibold text-white">Total Streams</h2>
+        <p className="text-3xl text-green-400">{streams}</p>
+      </div>
+
+      {/* Total Viewer Count Card */}
+      <div className="bg-gray-800 p-4 rounded-lg shadow-md">
+        <h2 className="text-xl font-semibold text-white">Total Viewer Count</h2>
+        <p className="text-3xl text-blue-400">{viewers}</p>
+      </div>
+
+      {/* Total Earned Card */}
+      <div className="bg-gray-800 p-4 rounded-lg shadow-md">
+        <h2 className="text-xl font-semibold text-white">Total Earned</h2>
+        <p className="text-3xl text-red-400">$2540</p>
+      </div>
+
+      {/* Total Streams Section with Graph */}
+      <div id="streamsGraph" className="bg-gray-800 p-4 rounded-lg shadow-md col-span-3">
+        <h2 className="text-xl font-semibold text-white">Total Streams</h2>
+
+        {/* Tab Selection */}
+        <div className="mt-4 flex space-x-2">
+          {["Monthly", "Yearly", "All Time", "Custom"].map((tab) => (
+            <button
+              key={tab}
+              onClick={() => setSelectedTab(tab)}
+              className={`px-4 py-2 rounded ${selectedTab === tab ? "bg-green-500 text-white" : "bg-gray-700 text-gray-300"}`}
+            >
+              {tab}
+            </button>
+          ))}
+        </div>
+
+        {/* Filters for Tabs */}
+        <div className="mt-4">
+          {selectedTab === "Yearly" && (
+            <div className="flex space-x-2">
+              <select
+                value={selectedYear}
+                onChange={(e) => setSelectedYear(Number(e.target.value))}
+                className="bg-gray-700 text-white px-2 py-1 rounded"
+              >
+                {Array.from({ length: 10 }, (_, i) => (
+                  <option key={i} value={new Date().getFullYear() - i}>
+                    {new Date().getFullYear() - i}
+                  </option>
+                ))}
+              </select>
+            </div>
+          )}
+          {selectedTab === "Custom" && (
+            <div>
+              <button onClick={() => setIsModalOpen(true)} className="bg-blue-500 text-white px-4 py-2 rounded">
+                Select Date Range
+              </button>
+            </div>
+          )}
+        </div>
+
+        {isModalOpen && (
+          <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
+            <div className="bg-gray-800 p-6 rounded-lg shadow-md w-96 relative">
+              
+              {/* Modal Header with Close Button */}
+              <div className="flex justify-between items-center mb-4">
+                <h2 className="text-xl text-white">Select Custom Date Range</h2>
+                <button
+                  onClick={() => setIsModalOpen(false)}
+                  className="text-white text-xl"
+                >
+                  &times;
+                </button>
+              </div>
+
+              {/* DatePicker */}
+              <div className="w-full mb-4">
+                <DatePicker
+                  selected={startDate}
+                  onChange={handleDateChange}
+                  startDate={startDate ?? undefined}
+                  endDate={endDate ?? undefined}
+                  selectsRange
+                  inline
+                  className="w-full" // Ensures DatePicker fills container's width
+                />
+              </div>
+
+              {/* Year and Month Filters */}
+              <div className="flex space-x-2 mb-4">
+                <select
+                  value={selectedYear}
+                  onChange={(e) => setSelectedYear(Number(e.target.value))}
+                  className="bg-gray-700 text-white px-2 py-1 rounded w-1/2"
+                >
+                  {Array.from({ length: 10 }, (_, i) => (
+                    <option key={i} value={new Date().getFullYear() - i}>
+                      {new Date().getFullYear() - i}
+                    </option>
+                  ))}
+                </select>
+                <select
+                  value={selectedMonth}
+                  onChange={(e) => setSelectedMonth(Number(e.target.value))}
+                  className="bg-gray-700 text-white px-2 py-1 rounded w-1/2"
+                >
+                  {Array.from({ length: 12 }, (_, i) => (
+                    <option key={i} value={i + 1}>
+                      {new Date(0, i).toLocaleString("default", { month: "long" })}
+                    </option>
+                  ))}
+                </select>
+              </div>
+
+              {/* Apply Button */}
+              <div className="mt-4 flex justify-end">
+                <button
+                  onClick={() => setIsModalOpen(false)}
+                  className="bg-green-500 text-white px-4 py-2 rounded"
+                >
+                  Apply
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* Bar Chart */}
+        <div className="mt-6">
+          <Bar data={barChartData} />
+        </div>
+      </div>
+    </main>
   );
 };
-
 
 export default DashboardPage;

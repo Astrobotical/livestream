@@ -22,7 +22,6 @@ const DashboardLayout = () => {
   const toggleStreams = () => {
     setIsStreamsOpen((prev) => !prev);
   };
-
   return (
     <div className="flex min-h-screen bg-gray-700">
       {/* Sidebar */}
