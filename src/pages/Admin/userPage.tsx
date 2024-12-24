@@ -22,7 +22,7 @@ const UsersPage = () => {
   useEffect(() => {
     const fetchUsers = async () => {
       try {
-        const response = await fetch("`https://livestreamdemo.romarioburke.me/api/admin/getUsers", {
+        const response = await fetch("https://livestreamdemo.romarioburke.me/api/admin/getUsers", {
           method: "GET",
           headers: {
             "Content-Type": "application/json",

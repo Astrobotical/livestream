@@ -85,7 +85,7 @@ const NavBar = () => {
 
   const checkingToken = useCallback(async () => {
     try {
-      const response = await fetch("`https://livestreamdemo.romarioburke.me/api/auth/verify", {
+      const response = await fetch("https://livestreamdemo.romarioburke.me/api/auth/verify", {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
