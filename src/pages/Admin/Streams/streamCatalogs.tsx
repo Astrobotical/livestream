@@ -81,7 +81,7 @@ const StreamCatalog = () => {
     }
 
     const response = await fetch(
-        `http://localhost:8000/api/admin/startStream/${streamId}`,
+        `https://livestreamdemo.romarioburke.me/api/admin/startStream/${streamId}`,
         {
           method: "POST",
           headers: {
@@ -124,7 +124,7 @@ const StreamCatalog = () => {
   useEffect(() => {
     const getStreams = async () => {
       const response = await fetch(
-          `http://localhost:8000/api/admin/getStreams`,
+          `https://livestreamdemo.romarioburke.me/api/admin/getStreams`,
           {
             method: "GET",
             headers: {
