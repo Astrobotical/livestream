@@ -1,129 +1,180 @@
-
 import { useState } from "react";
-import { FaClock, FaLink } from "react-icons/fa6";
+import { FaLink } from "react-icons/fa6"; // Removed FaClock since we're using the default time icon
 import { useSelector } from "react-redux";
-import Swal from 'sweetalert2'
-import withReactContent from 'sweetalert2-react-content';
+import Swal from "sweetalert2";
+import withReactContent from "sweetalert2-react-content";
 import { RootState } from "../../../redux/store";
 import streamModel from "../../../components/Models/Streams/streamModel";
+
 const CreateStreamPage = () => {
-  const [streamDate, setStreamDate] = useState(Date);
-  const [streamTime, setStreamTime] = useState('');
-  const [streamLink, setStreamLink] = useState('');
+  const [streamDate, setStreamDate] = useState("");
+  const [streamTime, setStreamTime] = useState("");
+  const [streamLink, setStreamLink] = useState("");
+  const [streamTitle, setStreamTitle] = useState("");
+  const [streamDescription, setStreamDescription] = useState("");
+  const [isLoading, setIsLoading] = useState(false); // For the loading overlay
+
   const tokenSaved = useSelector((state: RootState) => state.auth.token);
+
   const promptToast = () => {
     const Toast = withReactContent(Swal).mixin({
       toast: true,
-      position: 'top-right',
-      iconColor: 'white',
+      position: "top-right",
+      iconColor: "green",
       showConfirmButton: false,
       timer: 1500,
       timerProgressBar: true,
     });
     Toast.fire({
-      icon: 'success',
-      title: 'Submitted',
-    }
-    )
-  }
+      icon: "success",
+      title: "Stream Scheduled Successfully!",
+    });
+  };
+
   const clearValues = () => {
-    setStreamDate(Date);
-    setStreamLink('');
-    setStreamTime('');
-  }
+    setStreamDate("");
+    setStreamLink("");
+    setStreamTime("");
+    setStreamTitle("");
+    setStreamDescription("");
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    promptToast();
-    clearValues();
-    // Handle the form submission
+    setIsLoading(true); // Start loading animation
+
     const formData: streamModel = {
+      donations: "",
+      status: "",
       id: 0,
-      title: 'title',
-      description: 'something',
+      title: streamTitle,
+      description: streamDescription,
       stream_url: streamLink,
       stream_time: `${streamDate} ${streamTime}:00`,
       stream_date: streamDate
     };
-    //  alert(`Scheduled Stream Data: ${formData.date}`);
 
-    const response = await fetch(`https://livestreamdemo.romarioburke.me/api/admin/schedule`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${tokenSaved}`,
-      },
-      body: JSON.stringify(formData)
-    }
-    );
-    if (response.ok) {
-      console.log('Scheduled Stream Data:', formData);
-      promptToast();
+    try {
+      const response = await fetch(
+          `https://livestreamdemo.romarioburke.me/api/admin/schedule`,
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${tokenSaved}`,
+            },
+            body: JSON.stringify(formData),
+          }
+      );
 
+      if (response.ok) {
+        promptToast();
+        clearValues();
+      }
+    } catch (error) {
+      console.error("Error scheduling stream:", error);
+    } finally {
+      setIsLoading(false); // Stop loading animation
     }
-    // Submit form data to the server or process it as needed
   };
 
   return (
-    <div className="mx-auto p-6  rounded-lg bg-gray-800 h-1/2 shadow-md">
-      <h2 className="text-2xl font-bold mb-4 text-white">Schedule a Stream</h2>
-      <form onSubmit={handleSubmit} className="space-y-4">
+      <div className="relative">
+        {isLoading && (
+            <div className="fixed inset-0 bg-gray-900 bg-opacity-50 flex justify-center items-center z-50">
+              <div className="spinner-border text-primary" role="status">
+                <span className="sr-only">Loading...</span>
+              </div>
+            </div>
+        )}
 
-        {/* Date Field */}
-        <div className="flex flex-col sm:flex-row sm:items-center sm:space-x-4">
-          <label className="sm:w-1/3 text-white mb-2 sm:mb-0">Stream Date</label>
-          <input
-            type="date"
-            className="input input-bordered bg-gray-600 text-white w-full sm:w-1/2"
-            value={streamDate}
-            onChange={(e) => setStreamDate(e.target.value)}
-            required
-          />
-        </div>
+        <div className="mx-auto p-6 rounded-lg bg-gray-800 h-1/2 shadow-md max-w-2xl">
+          <h2 className="text-2xl font-bold mb-6 text-white text-center">
+            Schedule a Stream
+          </h2>
+          <form onSubmit={handleSubmit} className="space-y-6">
 
-        {/* Time Field */}
-        <div className="flex flex-col sm:flex-row sm:items-center sm:space-x-4">
-          <label className="sm:w-1/3 text-white mb-2 sm:mb-0">Stream Time</label>
-          <div className="relative w-full sm:w-1/2">
-            <input
-              type="time"
-              className="input input-bordered bg-gray-600 text-white w-full pr-10"
-              value={streamTime}
-              onChange={(e) => setStreamTime(e.target.value)}
-              required
-            />
-            {/* Add a time icon inside the input */}
-            <span className="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
-              <FaClock className="text-white" /> {/* Replace FaClock with your time icon */}
-            </span>
-          </div>
-        </div>
-        {/* Link Field */}
-        <div className="flex flex-col sm:flex-row sm:items-center sm:space-x-4">
-          <label className="sm:w-1/3 text-white mb-2 sm:mb-0">Stream Link</label>
-          <div className="relative w-full sm:w-1/2">
-            <input
-              type="url"
-              className="input input-bordered w-full bg-gray-600 text-white pr-10"
-              placeholder="https://www.example.com/stream"
-              value={streamLink}
-              onChange={(e) => setStreamLink(e.target.value)}
-              required
-            />
-            {/* Add an icon to the right with white color */}
-            <span className="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
-              <FaLink className="text-white" /> {/* Replace FaLink with the relevant icon */}
-            </span>
-          </div>
-        </div>
+            {/* Title Field */}
+            <div className="flex flex-col">
+              <label className="text-white mb-2">Stream Title</label>
+              <input
+                  type="text"
+                  className="input input-bordered bg-gray-600 text-white w-full"
+                  placeholder="Enter stream title"
+                  value={streamTitle}
+                  onChange={(e) => setStreamTitle(e.target.value)}
+                  required
+              />
+            </div>
 
-        {/* Submit Button */}
-        <div className="flex justify-end">
-          <button type="submit" className="btn btn-primary text-white">
-            Schedule Stream
-          </button>
+            {/* Description Field */}
+            <div className="flex flex-col">
+              <label className="text-white mb-2">Stream Description</label>
+              <textarea
+                  className="textarea textarea-bordered bg-gray-600 text-white w-full"
+                  placeholder="Enter stream description"
+                  value={streamDescription}
+                  onChange={(e) => setStreamDescription(e.target.value)}
+                  required
+                  rows={3}
+              />
+            </div>
+
+            {/* Date Field */}
+            <div className="flex flex-col">
+              <label className="text-white mb-2">Stream Date</label>
+              <input
+                  type="date"
+                  className="input input-bordered bg-gray-600 text-white w-full"
+                  value={streamDate}
+                  onChange={(e) => setStreamDate(e.target.value)}
+                  required
+              />
+            </div>
+
+            {/* Time Field */}
+            <div className="flex flex-col">
+              <label className="text-white mb-2">Stream Time</label>
+              <input
+                  type="time"
+                  className="input input-bordered bg-gray-600 text-white w-full"
+                  style={{ colorScheme: "dark" }} // Ensures the native time picker looks good on dark background
+                  value={streamTime}
+                  onChange={(e) => setStreamTime(e.target.value)}
+                  required
+              />
+            </div>
+
+            {/* Link Field */}
+            <div className="flex flex-col">
+              <label className="text-white mb-2">Stream Link</label>
+              <div className="relative">
+                <input
+                    type="url"
+                    className="input input-bordered bg-gray-600 text-white w-full pr-10"
+                    placeholder="https://www.example.com/stream"
+                    value={streamLink}
+                    onChange={(e) => setStreamLink(e.target.value)}
+                    required
+                />
+                <span className="absolute inset-y-0 right-3 flex items-center pointer-events-none">
+                <FaLink className="text-white" />
+              </span>
+              </div>
+            </div>
+
+            {/* Submit Button */}
+            <div className="flex justify-end">
+              <button
+                  type="submit"
+                  className="btn btn-primary bg-blue-600 hover:bg-blue-700 text-white w-full sm:w-auto px-6 py-2"
+              >
+                Schedule Stream
+              </button>
+            </div>
+          </form>
         </div>
-      </form>
-    </div>
+      </div>
   );
 };
 

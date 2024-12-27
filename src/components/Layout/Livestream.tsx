@@ -3,7 +3,11 @@ import ReactPlayer from 'react-player'
 import { useDispatch, useSelector } from 'react-redux';
 import { unMute,Mute } from '../../redux/streamSlice';
 import { RootState } from '../../redux/store';
-const Livestream = () => {
+interface LivestreamProps {
+  streamURL: string;
+}
+
+const Livestream: React.FC<LivestreamProps> = ({ streamURL }) => {
   const ismuted = useSelector((state: RootState) => state.stream.isMuted);
   const dispatch = useDispatch();
   const [playing, setPlaying] = useState(false);
@@ -61,11 +65,10 @@ const Livestream = () => {
         muted={ismuted} // Control mute state
         onPlay={handlePlay} // Callback when playing
         onPause={handlePause} // Callback when paused
-        onEnded={handleEnded} // Callback when video ends
+        url={streamURL} // Video URL
         onProgress={handleProgress} // Callback for progress
         width="100%"
-        height="100%"
-        url="https://www.youtube.com/watch?v=_VMSkX20T_U" // Video URL
+        height="100%"L
       />
 
       {/* Overlay with Control bar */}

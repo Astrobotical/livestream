@@ -68,7 +68,7 @@ const UsersPage = () => {
   }, [tagSearch, tokenSaved]);
 
   const handleViewProfile = (user: UserModel) => {
-    console.log("Viewing profile for user:", user); // Check user data
+  // console.log("Viewing profile for user:", user); // Check user data
     setSelectedUser(user);
     setIsProfileModalOpen(true);
   };
@@ -115,7 +115,7 @@ const UsersPage = () => {
     setUsers([]);
     try {
 
-      console.log("Recalling updates"); // Check updated user data
+     
       const response = await fetch(`https://livestreamdemo.romarioburke.me/api/admin/getUsers`, {
         method: "GET",
         headers: {

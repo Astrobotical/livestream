@@ -34,7 +34,7 @@ const StreamSetUpPage = () => {
         link: streamLink,
       };
     //  alert(`Scheduled Stream Data: ${formData.date}`);
-      console.log('Scheduled Stream Data:', formData);
+   
       
   
       // Submit form data to the server or process it as needed

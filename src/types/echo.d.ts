@@ -4,7 +4,6 @@ declare module 'laravel-echo' {
   }
   
   declare module 'pusher-js' {
-    export default class Pusher {
-      constructor(key: string, options?: any);
-    }
+    import Pusher from 'pusher-js';
+    export default Pusher;
   }

@@ -27,7 +27,7 @@ const Alert = async (options: AlertOptions) => {
           Swal.showLoading()
         } else if (result.isDenied) {
           /* Temp ban modal */
-          console.log(options.userID!);
+       
           TempTimeLine(options.userID!, options.token!);
         }
       }
