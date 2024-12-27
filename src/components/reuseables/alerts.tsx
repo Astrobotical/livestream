@@ -13,6 +13,21 @@ const Alert = async (options: AlertOptions) => {
         icon: 'success'
       });
       break;
+    case 'EndStream':
+      withReactContent(Swal).fire({
+        title: "Are you sure you want to end the stream?",
+        showDenyButton: true,
+        confirmButtonText: "Yes",
+        denyButtonText: `No`,
+      }).then((result) => {
+        if (result.isConfirmed) {
+          EndStream(options.streamID!, options.token!);
+          
+        } else if (result.isDenied) {
+        }
+      }
+    );
+      break;
     case 'ban':
       withReactContent(Swal).fire({
         title: "What type of ban would you like to give them?",
@@ -32,6 +47,25 @@ const Alert = async (options: AlertOptions) => {
         }
       }
       );
+  }
+  const EndStream = async (streamID: string, tokenSaved: string) => {
+    const response = await fetch(
+      `https://livestreamdemo.romarioburke.me/api/admin/endStream/${streamID}`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${tokenSaved}`,
+        },
+      }
+  );
+    if (response.ok) {
+      Swal.fire({
+        title: "Stream Ended",
+        text: "The stream has been ended!",
+        icon: "success"
+      });
+    }
   }
   const BanRequest = async (banType: string, userID: string, numDays: number, authToken: string) => {
     Swal.isLoading()

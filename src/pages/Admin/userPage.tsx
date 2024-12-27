@@ -80,6 +80,7 @@ const UsersPage = () => {
       message: "Your account was updated successfully!",
       userID: userID,
       token: tokenSaved,
+      streamID: null,
     };
     Alert(alertsModel);
     setUsers((prevUsers) =>

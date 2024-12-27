@@ -97,7 +97,8 @@ const SettingsPage = () => {
         title: 'Account Updated',
         message: 'Your account was updated successfully!',
         userID: null,
-        token: tokenSaved
+        token: tokenSaved,
+        streamID: null
       }
       Alert(alertsModel);
     }

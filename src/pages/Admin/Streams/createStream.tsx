@@ -45,13 +45,14 @@ const CreateStreamPage = () => {
 
     const formData: streamModel = {
       donations: "",
-      status: "",
+      stream_status: "",
       id: 0,
       title: streamTitle,
       description: streamDescription,
       stream_url: streamLink,
       stream_time: `${streamDate} ${streamTime}:00`,
-      stream_date: streamDate
+      stream_date: streamDate,
+      is_live: 0,
     };
 
     try {

@@ -3,6 +3,8 @@ import { useSelector } from "react-redux";
 import { RootState } from "../../../redux/store";
 import streamModel from "../../../components/Models/Streams/streamModel";
 import Alert from "../../../components/reuseables/alerts";
+import Pusher from "pusher-js";
+import { get } from "http";
 
 // Helper function for formatting the date with the day of the week
 const formatDate = (dateString: string) => {
@@ -18,9 +20,7 @@ const formatDate = (dateString: string) => {
 const StreamCatalog = () => {
   const tokenSaved = useSelector((state: RootState) => state.auth.token);
   const [streams, setStreams] = useState<streamModel[]>([]);
-  const [currentlyStreaming, setCurrentlyStreaming] = useState<number | null>(
-      null
-  );
+  const [currentlyStreaming, setCurrentlyStreaming] = useState<number | null>(null);
   const [isOpen, setIsOpen] = useState(false);
   const [isDetailsModalOpen, setIsDetailsModalOpen] = useState(false);
   const [streamDetails, setStreamDetails] = useState<streamModel | null>(null);
@@ -76,6 +76,7 @@ const StreamCatalog = () => {
             "A stream is already in progress. Please end the current stream before starting another.",
         userID: "someUserID",
         token: tokenSaved,
+        streamID: null,
       });
       return;
     }
@@ -105,10 +106,22 @@ const StreamCatalog = () => {
         message: "Stream has been started successfully",
         userID: "someUserID",
         token: tokenSaved,
+        streamID: null,
       });
     } else {
       console.error("Error starting stream");
     }
+  };
+
+  const endStream = async (streamId: string) => {
+    Alert({
+      type: "EndStream",
+      title: "Are you sure you want to end the stream?",
+      message: "This action cannot be undone.",
+      userID: "",
+      token: tokenSaved,
+      streamID: streamId,
+    }); 
   };
 
   const viewStreamDetails = (stream: streamModel) => {
@@ -138,6 +151,18 @@ const StreamCatalog = () => {
         setStreams(data);
       }
     };
+       const pusher = new Pusher('e997cc8249e3376f97b2', {
+          cluster: 'us2',
+          forceTLS: true, // Ensure the connection is secure
+        });
+    
+        // Subscribe to the channel
+        const channel = pusher.subscribe('streams');
+        channel.bind('streamEnded', (data: { message: string; }) => {
+          setStreams([]);
+          getStreams();
+        });
+    
     getStreams();
   }, [tokenSaved]);
 
@@ -218,20 +243,29 @@ const StreamCatalog = () => {
                             View Details
                           </button>
                           <button
-                              onClick={() => !isPast && startStream(stream.id)}
+                              onClick={() => {
+                                if (stream.is_live === 1) {
+                                  endStream(stream.id.toString());
+                                } else {
+                                  !isPast && startStream(stream.id);
+                                }
+                              }}
                               disabled={isPast}
                               className={`py-2 px-4 rounded ${
                                   isPast
                                       ? "bg-gray-600 cursor-not-allowed"
-                                      : currentlyStreaming === stream.id
-                                          ? "bg-green-700"
+                                      : stream.stream_status === "passed"?
+                                       "bg-gray-600 cursor-not-allowed"
+                                      : stream.is_live
+                                          ? "bg-red-600 hover:bg-red-700"
                                           : "bg-green-500 hover:bg-green-600"
                               }`}
                           >
                             {isPast
-                                ? "Stream Ended"
-                                : currentlyStreaming === stream.id
-                                    ? "Currently Streaming"
+                                ? "Stream Ended": stream.stream_status === "passed"?
+                                     "Stream Ended":
+                                 stream.is_live === 1
+                                    ? "End Stream"
                                     : "Start Stream"}
                           </button>
                         </div>
@@ -272,7 +306,7 @@ const StreamCatalog = () => {
                   {new Date(streamDetails.stream_time).toLocaleTimeString()}
                 </p>
                 <p className="text-white mb-2">
-                  <strong>Status:</strong> {streamDetails.status}
+                  <strong>Status:</strong> {streamDetails.stream_status}
                 </p>
                 <p className="text-white mb-4">
                   <strong>Donations:</strong> ${streamDetails.donations || 0}

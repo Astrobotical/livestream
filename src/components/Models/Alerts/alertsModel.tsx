@@ -4,6 +4,7 @@ interface AlertOptions{
     message:string,
     userID: string|null
     token:string|null,
+    streamID:string|null
 }
 
 export type {AlertOptions};
