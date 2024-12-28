@@ -164,7 +164,7 @@ const LoginPage = () => {
               <div className="relative">
                 <input
                   type={showPassword ? "text" : "password"}
-                  className="input input-bordered bg-gray-800 w-full pr-10"
+                  className="input input-bordered bg-gray-800 w-full pr-10 text-white"
                   placeholder="Enter your password"
                   name="password"
                   value={password || ""}
