@@ -144,7 +144,7 @@ const LoginPage = () => {
               <label className="block text-white mb-2">Email</label>
               <input
                   type="email"
-                  className="input input-bordered w-full text-white"
+                  className="input input-bordered  bg-gray-800 w-full text-white"
                   placeholder="Enter your email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
@@ -157,7 +157,7 @@ const LoginPage = () => {
               <div className="flex items-center relative">
                 <input
                     type={showPassword ? "text" : "password"}
-                    className="input input-bordered w-full pr-10"
+                    className="input input-bordered   bg-gray-800 w-full  pr-10"
                     placeholder="Enter your password"
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
