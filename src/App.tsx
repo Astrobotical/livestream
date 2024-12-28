@@ -1,8 +1,4 @@
-import React, { useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { logIn, logOut } from './redux/userSlice';
-import { setToken, clearToken } from './redux/authSlice';
-import { RootState } from './redux/store';
+import React from 'react';
 import NavBar from './components/Layout/navBar';
 import { BrowserRouter, Routes, Route, Outlet } from 'react-router-dom';
 import HomePage from './pages/General/HomePage';
@@ -11,16 +7,13 @@ import GalleryPage from './pages/General/GalleryPage';
 import LoginPage from './pages/General/LoginPage';
 import StreamPage from './pages/General/StreamPage';
 import DashBoardPage from './pages/Admin/DashboardPage';
-import DashboardLayout from './pages/Admin/DashboardLayout';
-import StreamSetUpPage from './pages/Admin/StreamSetUpPage';
+import DashboardLayout from './pages/Admin/DashboardLayout'; 
 import UsersPage from './pages/Admin/userPage';
 import StreamCatalog from './pages/Admin/Streams/streamCatalogs';
 import CreateStreamPage from './pages/Admin/Streams/createStream';
 //import Footer from './components/Layout/bottomNavBar';
 const SettingsPage = () => <h2 className="text-2xl">Settings</h2>;
 const App: React.FC = () => {
-  
-
   return (
     <>
       <BrowserRouter>

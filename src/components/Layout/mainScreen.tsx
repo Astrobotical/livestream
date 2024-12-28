@@ -145,7 +145,7 @@ const MainScreen = () => {
         )
       ) : (
         <div className="flex flex-col items-center justify-center h-screen bg-gray-600">
-          <h1 className="text-4xl text-center text-white">There is no Stream Today</h1>
+          <h1 className="text-4xl text-center streamText">There is no Stream Today</h1>
         </div>
       )}
     </>

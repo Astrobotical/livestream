@@ -13,3 +13,10 @@ input[type="date"]::-webkit-calendar-picker-indicator {
 .menu-width{
     width: 69px;
 }
+.streamText{
+    @apply text-cyan-500 font-semibold
+}
+
+.dark .streamText{
+    @apply text-red-600 font-extralight
+}
