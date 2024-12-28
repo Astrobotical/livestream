@@ -108,7 +108,6 @@ const LoginPage = () => {
           }
       );
       setIsLoading(false);
-
       if (response.ok) {
         setCheckUser(true);
         setStatus(true);
