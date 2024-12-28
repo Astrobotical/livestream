@@ -164,6 +164,8 @@ const LoginPage = () => {
                     onChange={(e) => setPassword(e.target.value)}
                     required
                 />
+                <button formNoValidate type="button" className=" hidden absolute right-2 text-gray-600" onClick={() => setShowPassword(!showPassword)}> 
+                  </button>
                 <button
                     type="button"
                     className="absolute right-2 text-gray-600"
