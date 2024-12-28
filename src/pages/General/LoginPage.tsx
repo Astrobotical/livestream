@@ -145,6 +145,7 @@ const LoginPage = () => {
                   type="email"
                   className="input input-bordered  bg-gray-800 w-full text-white"
                   placeholder="Enter your email"
+                  name="email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   required
@@ -158,6 +159,7 @@ const LoginPage = () => {
                     type={showPassword ? "text" : "password"}
                     className="input input-bordered   bg-gray-800 w-full  pr-10"
                     placeholder="Enter your password"
+                    name="password"
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
                     required
