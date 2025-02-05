@@ -22,11 +22,11 @@ const Alert = async (options: AlertOptions) => {
       }).then((result) => {
         if (result.isConfirmed) {
           EndStream(options.streamID!, options.token!);
-          
+
         } else if (result.isDenied) {
         }
       }
-    );
+      );
       break;
     case 'ban':
       withReactContent(Swal).fire({
@@ -42,7 +42,7 @@ const Alert = async (options: AlertOptions) => {
           Swal.showLoading()
         } else if (result.isDenied) {
           /* Temp ban modal */
-       
+
           TempTimeLine(options.userID!, options.token!);
         }
       }
@@ -50,7 +50,7 @@ const Alert = async (options: AlertOptions) => {
   }
   const EndStream = async (streamID: string, tokenSaved: string) => {
     const response = await fetch(
-      `https://livestreamdemo.romarioburke.me/api/admin/endStream/${streamID}`,
+      `${process.env.REACT_APP_API_BASE_URL}admin/endStream/${streamID}`,
       {
         method: "POST",
         headers: {
@@ -58,7 +58,7 @@ const Alert = async (options: AlertOptions) => {
           Authorization: `Bearer ${tokenSaved}`,
         },
       }
-  );
+    );
     if (response.ok) {
       Swal.fire({
         title: "Stream Ended",
@@ -71,7 +71,7 @@ const Alert = async (options: AlertOptions) => {
     Swal.isLoading()
     Swal.showLoading()
     const response = await fetch(
-      `https://livestreamdemo.romarioburke.me/api/admin/banUser`, {
+      `${process.env.REACT_APP_API_BASE_URL}admin/banUser`, {
       method: 'POST',
       headers: {
         'Accept': 'application/json',

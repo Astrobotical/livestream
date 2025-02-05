@@ -85,7 +85,7 @@ const NavBar = () => {
 
   const checkingToken = useCallback(async () => {
     try {
-      const response = await fetch("https://livestreamdemo.romarioburke.me/api/auth/verify", {
+      const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}auth/verify`, {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
@@ -96,10 +96,9 @@ const NavBar = () => {
       if (response.ok) {
         const data = await response.json();
         if (tokenSaved) {
-          dispatch(logIn({ token: tokenSaved, user: data.user, userID: data.userID }));
-        }
-        if (tokenSaved) {
           dispatch(setToken(tokenSaved));
+          dispatch(logIn({ token: tokenSaved, user: data.user, userID: data.userID }));
+          
         }
       } else {
         dispatch(clearToken());

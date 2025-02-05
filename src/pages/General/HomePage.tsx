@@ -10,6 +10,7 @@ const HomePage = () => {
   useEffect(() => {
     document.body.style.overflow = 'hidden';
     document.title = "Home | Yardie";
+    console.log("API URL", process.env.REACT_APP_API_BASE_URL);
     // Reset the body overflow style when the component unmounts
     return () => {
       document.body.style.overflow = 'auto';

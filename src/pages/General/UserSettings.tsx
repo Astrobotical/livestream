@@ -24,7 +24,7 @@ const SettingsPage = () => {
     document.title = "Watch | Stream";
 
     const getUserInfo = async () => {
-      const response = await fetch(`https://livestreamdemo.romarioburke.me/api/user/get`, {
+      const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}user/get`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
@@ -36,7 +36,7 @@ const SettingsPage = () => {
         const data = await response.json();
         setName(data.name);
         setEmail(data.email);
-      //  console.log(data);
+        //  console.log(data);
       }
     };
     getUserInfo();
@@ -44,7 +44,7 @@ const SettingsPage = () => {
   }, [tokenSaved]);
   const handleCurrentPasswordChecker = async (inputValue: string) => {
 
-  // console.log(inputValue);
+    // console.log(inputValue);
     setCurrentPassword(inputValue);
 
     if (typingTimeout) {
@@ -52,7 +52,7 @@ const SettingsPage = () => {
     }
     // Set a new timeout to handle user "done typing"
     const timeoutId = window.setTimeout(async () => {
-     // console.log('User finished typing:', inputValue);
+      // console.log('User finished typing:', inputValue);
       const response = await fetch(`https://livestreamdemo.romarioburke.me/ api / user / checkpassword`, {
         method: 'POST',
         headers: {
@@ -72,7 +72,7 @@ const SettingsPage = () => {
             setiscurrentPassword(false);
             break;
         }
-       // console.log(data);
+        // console.log(data);
       }
     }, 1000); // 1 second delay after typing stops
 
@@ -81,7 +81,7 @@ const SettingsPage = () => {
   }
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    const response = await fetch(`https://livestreamdemo.romarioburke.me/api/user/update`, {
+    const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}user/update`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',

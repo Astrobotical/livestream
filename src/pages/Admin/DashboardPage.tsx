@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { Bar } from "react-chartjs-2";
 import { Chart, CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend } from "chart.js";
-import DatePicker from "react-datepicker";
-import "react-datepicker/dist/react-datepicker.css";
+//import DatePicker from "react-datepicker";
+//import "react-datepicker/dist/react-datepicker.css";
 import { useSelector } from "react-redux";
 import { RootState } from "../../redux/store";
 
@@ -31,7 +31,7 @@ const DashboardPage = () => {
   const customData = generateRandomData(10, 300); // Example custom range data
 
   const fetchDashboardData = async () => {
-    const response = await fetch("https://livestreamdemo.romarioburke.me/api/admin/getStreams", {
+    const response = await fetch("${process.env.REACT_APP_API_BASE_URL}admin/getStreams", {
       headers: { Authorization: `Bearer ${tokenSaved}` },
     });
     if (response.ok) {
@@ -41,7 +41,7 @@ const DashboardPage = () => {
   };
 
   const fetchViewers = async () => {
-    const response = await fetch("https://livestreamdemo.romarioburke.me/api/admin/getUsers", {
+    const response = await fetch("${process.env.REACT_APP_API_BASE_URL}admin/getUsers", {
       headers: { Authorization: `Bearer ${tokenSaved}` },
     });
     if (response.ok) {
@@ -169,6 +169,7 @@ const DashboardPage = () => {
 
               {/* DatePicker */}
               <div className="w-full mb-4">
+                {/*
                 <DatePicker
                   selected={startDate}
                   onChange={handleDateChange}
@@ -178,6 +179,7 @@ const DashboardPage = () => {
                   inline
                   className="w-full" // Ensures DatePicker fills container's width
                 />
+*/}
               </div>
 
               {/* Year and Month Filters */}

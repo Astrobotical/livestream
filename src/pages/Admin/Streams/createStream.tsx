@@ -57,15 +57,15 @@ const CreateStreamPage = () => {
 
     try {
       const response = await fetch(
-          `https://livestreamdemo.romarioburke.me/api/admin/schedule`,
-          {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: `Bearer ${tokenSaved}`,
-            },
-            body: JSON.stringify(formData),
-          }
+        `${process.env.REACT_APP_API_BASE_URL}admin/schedule`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${tokenSaved}`,
+          },
+          body: JSON.stringify(formData),
+        }
       );
 
       if (response.ok) {
@@ -80,102 +80,102 @@ const CreateStreamPage = () => {
   };
 
   return (
-      <div className="relative">
-        {isLoading && (
-            <div className="fixed inset-0 bg-gray-900 bg-opacity-50 flex justify-center items-center z-50">
-              <div className="spinner-border text-primary" role="status">
-                <span className="sr-only">Loading...</span>
-              </div>
-            </div>
-        )}
+    <div className="relative">
+      {isLoading && (
+        <div className="fixed inset-0 bg-gray-900 bg-opacity-50 flex justify-center items-center z-50">
+          <div className="spinner-border text-primary" role="status">
+            <span className="sr-only">Loading...</span>
+          </div>
+        </div>
+      )}
 
-        <div className="mx-auto p-6 rounded-lg bg-gray-800 h-1/2 shadow-md max-w-2xl">
-          <h2 className="text-2xl font-bold mb-6 text-white text-center">
-            Schedule a Stream
-          </h2>
-          <form onSubmit={handleSubmit} className="space-y-6">
+      <div className="mx-auto p-6 rounded-lg bg-gray-800 h-1/2 shadow-md max-w-2xl">
+        <h2 className="text-2xl font-bold mb-6 text-white text-center">
+          Schedule a Stream
+        </h2>
+        <form onSubmit={handleSubmit} className="space-y-6">
 
-            {/* Title Field */}
-            <div className="flex flex-col">
-              <label className="text-white mb-2">Stream Title</label>
+          {/* Title Field */}
+          <div className="flex flex-col">
+            <label className="text-white mb-2">Stream Title</label>
+            <input
+              type="text"
+              className="input input-bordered bg-gray-600 text-white w-full"
+              placeholder="Enter stream title"
+              value={streamTitle}
+              onChange={(e) => setStreamTitle(e.target.value)}
+              required
+            />
+          </div>
+
+          {/* Description Field */}
+          <div className="flex flex-col">
+            <label className="text-white mb-2">Stream Description</label>
+            <textarea
+              className="textarea textarea-bordered bg-gray-600 text-white w-full"
+              placeholder="Enter stream description"
+              value={streamDescription}
+              onChange={(e) => setStreamDescription(e.target.value)}
+              required
+              rows={3}
+            />
+          </div>
+
+          {/* Date Field */}
+          <div className="flex flex-col">
+            <label className="text-white mb-2">Stream Date</label>
+            <input
+              type="date"
+              className="input input-bordered bg-gray-600 text-white w-full"
+              value={streamDate}
+              onChange={(e) => setStreamDate(e.target.value)}
+              required
+            />
+          </div>
+
+          {/* Time Field */}
+          <div className="flex flex-col">
+            <label className="text-white mb-2">Stream Time</label>
+            <input
+              type="time"
+              className="input input-bordered bg-gray-600 text-white w-full"
+              style={{ colorScheme: "dark" }} // Ensures the native time picker looks good on dark background
+              value={streamTime}
+              onChange={(e) => setStreamTime(e.target.value)}
+              required
+            />
+          </div>
+
+          {/* Link Field */}
+          <div className="flex flex-col">
+            <label className="text-white mb-2">Stream Link</label>
+            <div className="relative">
               <input
-                  type="text"
-                  className="input input-bordered bg-gray-600 text-white w-full"
-                  placeholder="Enter stream title"
-                  value={streamTitle}
-                  onChange={(e) => setStreamTitle(e.target.value)}
-                  required
+                type="url"
+                className="input input-bordered bg-gray-600 text-white w-full pr-10"
+                placeholder="https://www.example.com/stream"
+                value={streamLink}
+                onChange={(e) => setStreamLink(e.target.value)}
+                required
               />
-            </div>
-
-            {/* Description Field */}
-            <div className="flex flex-col">
-              <label className="text-white mb-2">Stream Description</label>
-              <textarea
-                  className="textarea textarea-bordered bg-gray-600 text-white w-full"
-                  placeholder="Enter stream description"
-                  value={streamDescription}
-                  onChange={(e) => setStreamDescription(e.target.value)}
-                  required
-                  rows={3}
-              />
-            </div>
-
-            {/* Date Field */}
-            <div className="flex flex-col">
-              <label className="text-white mb-2">Stream Date</label>
-              <input
-                  type="date"
-                  className="input input-bordered bg-gray-600 text-white w-full"
-                  value={streamDate}
-                  onChange={(e) => setStreamDate(e.target.value)}
-                  required
-              />
-            </div>
-
-            {/* Time Field */}
-            <div className="flex flex-col">
-              <label className="text-white mb-2">Stream Time</label>
-              <input
-                  type="time"
-                  className="input input-bordered bg-gray-600 text-white w-full"
-                  style={{ colorScheme: "dark" }} // Ensures the native time picker looks good on dark background
-                  value={streamTime}
-                  onChange={(e) => setStreamTime(e.target.value)}
-                  required
-              />
-            </div>
-
-            {/* Link Field */}
-            <div className="flex flex-col">
-              <label className="text-white mb-2">Stream Link</label>
-              <div className="relative">
-                <input
-                    type="url"
-                    className="input input-bordered bg-gray-600 text-white w-full pr-10"
-                    placeholder="https://www.example.com/stream"
-                    value={streamLink}
-                    onChange={(e) => setStreamLink(e.target.value)}
-                    required
-                />
-                <span className="absolute inset-y-0 right-3 flex items-center pointer-events-none">
+              <span className="absolute inset-y-0 right-3 flex items-center pointer-events-none">
                 <FaLink className="text-white" />
               </span>
-              </div>
             </div>
+          </div>
 
-            {/* Submit Button */}
-            <div className="flex justify-end">
-              <button
-                  type="submit"
-                  className="btn btn-primary bg-blue-600 hover:bg-blue-700 text-white w-full sm:w-auto px-6 py-2"
-              >
-                Schedule Stream
-              </button>
-            </div>
-          </form>
-        </div>
+          {/* Submit Button */}
+          <div className="flex justify-end">
+            <button
+              type="submit"
+              className="btn btn-primary bg-blue-600 hover:bg-blue-700 text-white w-full sm:w-auto px-6 py-2"
+            >
+              Schedule Stream
+            </button>
+          </div>
+        </form>
       </div>
+    </div>
   );
 };
 

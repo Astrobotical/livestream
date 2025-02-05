@@ -12,6 +12,7 @@ import UsersPage from './pages/Admin/userPage';
 import StreamCatalog from './pages/Admin/Streams/streamCatalogs';
 import CreateStreamPage from './pages/Admin/Streams/createStream';
 //import Footer from './components/Layout/bottomNavBar';
+console.log("API URL", process.env.REACT_APP_API_BASE_URL);
 const SettingsPage = () => <h2 className="text-2xl">Settings</h2>;
 const App: React.FC = () => {
   return (

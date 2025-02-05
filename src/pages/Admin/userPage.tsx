@@ -22,7 +22,7 @@ const UsersPage = () => {
   useEffect(() => {
     const fetchUsers = async () => {
       try {
-        const response = await fetch("https://livestreamdemo.romarioburke.me/api/admin/getUsers", {
+        const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}admin/getUsers`, {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
@@ -48,7 +48,7 @@ const UsersPage = () => {
     const fetchTags = async () => {
       try {
         const response = await fetch(
-          `https://livestreamdemo.romarioburke.me/api/tags?query=${tagSearch}`,
+          `${process.env.REACT_APP_API_BASE_URL}tags?query=${tagSearch}`,
           {
             method: "GET",
             headers: {
@@ -68,7 +68,7 @@ const UsersPage = () => {
   }, [tagSearch, tokenSaved]);
 
   const handleViewProfile = (user: UserModel) => {
-  // console.log("Viewing profile for user:", user); // Check user data
+    // console.log("Viewing profile for user:", user); // Check user data
     setSelectedUser(user);
     setIsProfileModalOpen(true);
   };
@@ -116,8 +116,8 @@ const UsersPage = () => {
     setUsers([]);
     try {
 
-     
-      const response = await fetch(`https://livestreamdemo.romarioburke.me/api/admin/getUsers`, {
+
+      const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}admin/getUsers`, {
         method: "GET",
         headers: {
           "Content-Type": "application/json",

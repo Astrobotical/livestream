@@ -29,7 +29,7 @@ const LoginPage = () => {
     try {
       setIsLoading(true);
       const response = await fetch(
-        `https://livestreamdemo.romarioburke.me/api/auth/signup`,
+        `${process.env.REACT_APP_API_BASE_URL}auth/signup`,
         {
           method: "POST",
           headers: {
@@ -68,7 +68,7 @@ const LoginPage = () => {
     try {
       setIsLoading(true);
       const response = await fetch(
-        `https://livestreamdemo.romarioburke.me/api/auth/login`,
+        `${process.env.REACT_APP_API_BASE_URL}auth/login`,
         {
           method: "POST",
           headers: {
@@ -101,7 +101,7 @@ const LoginPage = () => {
     try {
       setIsLoading(true);
       const response = await fetch(
-        `https://livestreamdemo.romarioburke.me/api/auth/validate`,
+        `${process.env.REACT_APP_API_BASE_URL}auth/validate`,
         {
           method: "POST",
           headers: {
@@ -126,9 +126,36 @@ const LoginPage = () => {
   };
 
   return (
-    <div className="flex justify-center items-start h-screen bg-gray-600">
+    <div className="flex justify-center items-center min-h-screen">
+    <div className=" bg-green[100] rounded-2xl shadow-lg flex w-4/5 max-w-5xl">
+    <div className="w-1/2 p-8 flex flex-col justify-center">
+      <h2 className="text-3xl font-bold text-purple-500">Welcome!</h2>
+      <p className="text-gray-500 mt-4">Sign-in to your account</p>
+        <form className="mt-6 flex flex-col gap-4">
+        <input 
+          type="email" 
+          placeholder="E-mail" 
+          className="p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-400"
+        />
+        <input 
+          type="password" 
+          placeholder="Password" 
+          className="p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-400"
+        />
+        <div className="flex justify-between items-center">
+          <label className="flex items-center gap-2">
+            <input type="checkbox" className="h-4 w-4 text-purple-500" />
+            <span className="text-sm text-gray-600">Remember me</span>
+          </label>
+          <a href="#" className="text-sm text-purple-500 hover:underline">Forgot password?</a>
+        </div>
+        <button className="bg-purple-500 text-white py-3 rounded-lg hover:bg-purple-600">Sign In</button>
+      </form>
+
+ 
+    </div>
       <div
-        className="bg-gray-700 p-8 rounded-lg shadow-md w-full max-w-sm border mt-20 border-gray-300"
+        className="bg-gray-700 p-8 shadow-md w-1/2 h-full mt-20 "
         style={{ borderRadius: "15px" }}
       >
         <h2 className="text-2xl font-bold mb-6 text-center text-white">
@@ -223,6 +250,7 @@ const LoginPage = () => {
           </div>
         </form>
       </div>
+    </div>
     </div>
   );
 };

@@ -1,6 +1,6 @@
 // src/Routes.tsx
 import React from 'react';
-import { BrowserRouter , Routes, Route, Outlet } from 'react-router-dom';
+import { BrowserRouter , Routes, Route, Outlet,redirect} from 'react-router-dom';
 import HomePage from './pages/General/HomePage';
 import AboutPage from './pages/General/AboutPage';
 import GalleryPage from './pages/General/GalleryPage';
@@ -20,7 +20,8 @@ const AppRoutes = () => {
   return (
     <BrowserRouter>
     <>
-      <NavBar />  {/* This should be inside BrowserRouter */}
+      <NavBar /> 
+       
       <Routes>
         <Route path="/" element={<HomePage />} />
         <Route path="/about" element={<AboutPage />} />
@@ -28,9 +29,9 @@ const AppRoutes = () => {
         <Route path="/login" element={<LoginPage />} />
         <Route path="/stream" element={<StreamPage />} />
         <Route path="/dashboard" element={<DashboardLayout />}>
-            <Route index element={<DashBoardPage />} />  {/* Default Dashboard page */}
-            <Route path="users" element={<UsersPage />} />  {/* /dashboard/users */}
-            <Route path="settings" element={<SettingsPage />} />  {/* /dashboard/settings */}
+            <Route index element={<DashBoardPage />} /> 
+            <Route path="users" element={<UsersPage />} /> 
+            <Route path="settings" element={<SettingsPage />} /> 
             <Route path="streamsetup"element={<StreamSetUpPage />} />
             <Route path="stream" element={<StreamDefault/>}>
               <Route path="setup" element={<CreateStreamPage/>} />
@@ -38,7 +39,7 @@ const AppRoutes = () => {
             </Route>
          </Route>
       </Routes>
-      <Outlet />  {/* Outlet should also be inside BrowserRouter */}
+      <Outlet />
     </>
   </BrowserRouter>
   );
