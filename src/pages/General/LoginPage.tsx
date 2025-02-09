@@ -126,11 +126,11 @@ const LoginPage = () => {
   };
 
   return (
-    <div className="flex justify-center items-center min-h-screen">
-    <div className=" bg-green[100] rounded-2xl shadow-lg flex w-4/5 max-w-5xl">
-    <div className="w-1/2 p-8 flex flex-col justify-center">
-      <h2 className="text-3xl font-bold text-purple-500">Welcome!</h2>
-      <p className="text-gray-500 mt-4">Sign-in to your account</p>
+    <div className="min-h-screen flex justify-center items-center bg-gray-700 h-90 ">
+    <div className=" rounded-2xl shadow-lg flex w-4/5 max-w-5xl h-full bg-gray-800">
+    <div className="w-1/2 p-8 flex flex-col justify-center ">
+      <h2 className="text-3xl font-bold text-indigo-500">Welcome!</h2>
+      <p className="text-white mt-4">Sign-in to your account</p>
         <form className="mt-6 flex flex-col gap-4">
         <input 
           type="email" 
@@ -144,19 +144,32 @@ const LoginPage = () => {
         />
         <div className="flex justify-between items-center">
           <label className="flex items-center gap-2">
-            <input type="checkbox" className="h-4 w-4 text-purple-500" />
-            <span className="text-sm text-gray-600">Remember me</span>
+            <input type="checkbox" className="h-4 w-4 text-indigo-500 checked:bg-indigo-500" />
+            <span className="text-sm text-white">Remember me</span>
           </label>
-          <a href="#" className="text-sm text-purple-500 hover:underline">Forgot password?</a>
+          <a href="#" className="text-sm text-indigo-500 hover:underline">Forgot password?</a>
         </div>
-        <button className="bg-purple-500 text-white py-3 rounded-lg hover:bg-purple-600">Sign In</button>
+        <button className="bg-indigo-500 text-white py-3 rounded-lg hover:bg-purple-600">Sign In</button>
+        <div className="flex items-center w-full">
+  <div className="flex-1 border-t border-white"></div>
+  <span className="px-3 text-white font-medium">OR</span>
+  <div className="flex-1 border-t border-white"></div>
+  </div>
+       
+        <button className="bg-indigo-500 text-white py-3 px-6 rounded-lg mt-6 hover:bg-purple-600">Sign Up with Google</button>
       </form>
-
- 
     </div>
+    <div className="w-[50%] bg-indigo-500 flex flex-col items-center justify-center">
+      <h2 className="text-3xl font-bold text-white">New Here?</h2>
+      <p className="text-white mt-4">Create an account</p>
+      <button className="bg-purple-500 text-white py-3 px-6 rounded-lg mt-6 hover:bg-purple-600">Sign Up</button>
+
+    
+    
+    </div>
+    {/*
       <div
-        className="bg-gray-700 p-8 shadow-md w-1/2 h-full mt-20 "
-        style={{ borderRadius: "15px" }}
+        className="bg-gray-700 p-8 w-1/2 flex flex-col"
       >
         <h2 className="text-2xl font-bold mb-6 text-center text-white">
           User Authentication
@@ -250,6 +263,7 @@ const LoginPage = () => {
           </div>
         </form>
       </div>
+      */}
     </div>
     </div>
   );
