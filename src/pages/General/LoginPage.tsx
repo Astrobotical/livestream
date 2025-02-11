@@ -22,6 +22,8 @@ const LoginPage = () => {
     document.title = "Login | Yardie";
   }, []);
 
+  /* 
+  Might Migrate to a standalone component
   // Handle User Signup
   const handleUserSignup = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -60,7 +62,7 @@ const LoginPage = () => {
       setIsLoading(false);
     }
   };
-
+*/
   // Handle User Login
   const handleUserLogin = async (e: React.FormEvent) => {
     e.preventDefault();
