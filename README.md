@@ -1,46 +1,81 @@
-# Getting Started with Create React App
+# StreamMe
+-- Work In Progress --
+StreamMe is a powerful web application that enables users to stream content and monitor analytics across all major streaming platforms from a single interface. Whether you're a content creator, a marketer, or a business looking to optimize your live streaming strategy, StreamMe provides a seamless and efficient way to manage your streaming presence.
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## Features
 
-## Available Scripts
+- **Multi-Platform Streaming** – Broadcast live to multiple platforms simultaneously.
+- **Real-Time Analytics** – Monitor viewer engagement, stream health, and key performance metrics.
+- **Centralized Dashboard** – Manage all streaming accounts from one place.
+- **Cross-Platform Chat Integration** – Interact with audiences from different platforms in one chat interface.
+- **Stream Scheduling** – Plan and automate streams in advance.
+- **Custom Alerts & Notifications** – Get notified about key events, trends, and performance insights.
+- **Secure & Reliable** – Ensures high-quality streaming with minimal latency and robust security.
 
-In the project directory, you can run:
+## Supported Platforms
 
-### `npm start`
+StreamMe integrates with all major streaming services, including:
+- Twitch
+- YouTube Live
+- Facebook Live
+- TikTok Live
+- Kick
+- Trovo
+- Twitter (X)
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+## Installation & Setup
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+### Prerequisites
+Ensure you have the following installed:
+- Node.js (latest LTS version recommended)
+- npm or yarn
 
-### `npm test`
+### Clone the Repository
+```bash
+git clone https://github.com/Astrobotical/StreamMeFront-End.git
+cd streamme
+```
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+### Install Dependencies
+```bash
+npm install
+```
 
-### `npm run build`
+### Environment Configuration
+Create a `.env` file in the root directory and configure the necessary API keys and credentials:
+```env
+PORT=3000
+DATABASE_URL="your-database-url"
+STREAM_API_KEYS="your-streaming-platform-api-keys"
+JWT_SECRET="your-secret-key"
+```
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+### Run the Development Server
+```bash
+npm run dev
+```
+The app will be available at `http://localhost:3000`.
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+## Deployment
+StreamMe can be deployed on cloud platforms such as AWS, Vercel, or DigitalOcean. To deploy:
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+1. Build the project:
+```bash
+npm run build
+```
+2. Start the production server:
+```bash
+npm start
+```
 
-### `npm run eject`
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+## Contributing
+We welcome contributions from the community! To contribute:
+1. Fork the repository
+2. Create a feature branch (`git checkout -b feature-name`)
+3. Commit your changes (`git commit -m "Add feature"`)
+4. Push to your branch (`git push origin feature-name`)
+5. Open a pull request
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
+## License
+StreamMe is open-source and licensed under the MIT License. See the `LICENSE` file for more details.
