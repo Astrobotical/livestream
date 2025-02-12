@@ -18,7 +18,7 @@ const AccountMenu = memo(({ isAdmin, userLoggedIn, handleLinkClick, toggleDropdo
   if (!userLoggedIn) {
     return (
       <button
-        onClick={() => handleLinkClick("/login")}
+        onClick={() => handleLinkClick("/authentication")}
         className="text-white btn btn-ghost"
       >
         Login

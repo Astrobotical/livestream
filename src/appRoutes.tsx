@@ -14,6 +14,7 @@ import UsersPage from './pages/Admin/userPage';
 import StreamCatalog from './pages/Admin/Streams/streamCatalogs';
 import CreateStreamPage from './pages/Admin/Streams/createStream';
 import SettingsPage from './pages/General/UserSettings';
+import AuthenticationPage from './pages/Authentication/authenticationPage';
 //import Footer from './components/Layout/bottomNavBar';
 const StreamDefault = () =><Outlet></Outlet>
 const AppRoutes = () => {
@@ -26,7 +27,7 @@ const AppRoutes = () => {
         <Route path="/" element={<HomePage />} />
         <Route path="/about" element={<AboutPage />} />
         <Route path="/gallery" element={<GalleryPage />} />
-        <Route path="/login" element={<LoginPage />} />
+        <Route path="/authentication" element={<AuthenticationPage />} />
         <Route path="/stream" element={<StreamPage />} />
         <Route path="/dashboard" element={<DashboardLayout />}>
             <Route index element={<DashBoardPage />} /> 

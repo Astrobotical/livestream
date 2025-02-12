@@ -130,7 +130,7 @@ const LoginPage = () => {
 
   return (
     <div className="min-h-screen flex justify-center items-center bg-gray-700 h-90 ">
-    <div className=" rounded-3xl shadow-lg flex w-4/5 max-w-5xl h-full bg-gray-800">
+    <div className="rounded-3xl shadow-lg flex w-4/5 max-w-5xl h-full bg-gray-800">
     <div className="w-full md:w-1/2 p-8 flex flex-col justify-center ">
       <h2 className="text-3xl font-bold text-indigo-500">Welcome!</h2>
       <p className="text-white mt-4">Sign-in to your account</p>
