@@ -38,7 +38,7 @@ const SignInPage = ({ onSwitch }: { onSwitch: (view: "signin" | "signup" | "forg
                         <input type="checkbox" className="h-4 w-4 text-indigo-500 checked:bg-indigo-500" />
                         <span className="text-sm text-white">Remember me</span>
                     </label>
-                    <a href="#" className="text-sm text-indigo-500 hover:underline">Forgot password?</a>
+                    <span  className="text-sm text-indigo-500 hover:underline hover:text-purple-600" onClick={() => onSwitch("forgotpassword")}>Forgot password?</span>
                 </div>
                 <button className="bg-indigo-500 text-white py-3 rounded-lg hover:bg-purple-600">Sign In</button>
                 <div className="flex items-center w-full">
@@ -54,7 +54,7 @@ const SignInPage = ({ onSwitch }: { onSwitch: (view: "signin" | "signup" | "forg
                         <FaFacebook size={40} />
                     </button>
                 </div>
-                <p className="text-white text-center mt-4">Don't have an account? <span className="text-indigo-500 hover:underline" onClick={() => onSwitch("signup")}>Sign Up</span></p>
+                <p className="text-white text-center mt-4">Don't have an account? <span className="text-indigo-500 hover:underline hover:text-purple-600" onClick={() => onSwitch("signup")}>Sign Up</span></p>
             </form>
         </div><div className=" hidden md:flex  w-[50%]  bg-indigo-500 flex flex-col items-center justify-center">
                 <h2 className="text-3xl font-bold text-white">Welcome Back!</h2>

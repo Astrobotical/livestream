@@ -1,49 +1,80 @@
 import { useState } from "react";
 import { FaEyeSlash, FaEye, FaFacebook } from "react-icons/fa";
 import { FcGoogle } from "react-icons/fc";
-
+import { MdOutlineEmail } from "react-icons/md";
+import { FaRegUser } from "react-icons/fa";
+import { TbLockPassword } from "react-icons/tb";
 const SignUpPage = ({ onSwitch }: { onSwitch: (view: "signin" | "signup" | "forgotpassword") => void }) => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [showPassword, setShowPassword] = useState(false);
+    const [name, setName] = useState("");
+    const [confirmPassword, setConfirmPassword] = useState(""); 
+    const [showConfirmPassword, setShowConfirmPassword] = useState(false);
     return (
         <>
             <div className="flex w-full h-full bg-gray-800">
                 <div className=" hidden md:flex  w-[50%]  bg-indigo-500 flex flex-col items-center justify-center">
                     <h2 className="text-3xl font-bold text-white">New Here?</h2>
-                    <p className="text-white mt-4">Create an account</p>
-                    <button className="bg-purple-500 text-white py-3 px-6 rounded-lg mt-6 hover:bg-purple-600" onClick={() => onSwitch("signup")}>Sign Up</button>
+                    <p className="text-white mt-4 text-lg text-center">Create an account to unlock exclusive features and stay updated with the latest news.</p>
                 </div>
                 <div className="w-full md:w-1/2 p-8 flex flex-col justify-center ">
                     <h2 className="text-3xl font-bold text-indigo-500">Sign Up</h2>
-                    <p className="text-white mt-4">Sign-in to your account</p>
+                    <p className="text-white mt-4">Sign up to create your account</p>
                     <form className="mt-6 flex flex-col gap-4">
-                        <input
-                            type="email"
-                            placeholder="E-mail"
-                            className="p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-400" />
-                        <div className="relative">
+                    <label className="input input-bordered flex items-center gap-2">
+                    <FaRegUser className="h-4 w-4 opacity-70"/>
+                    <input type="text" className="grow" placeholder="Please enter your name" 
+                    onChange={(e) => setName(e.target.value)}
+                    />
+                    </label>
+                    <label className="input input-bordered flex items-center gap-2">
+                    <MdOutlineEmail className="h-4 w-4 opacity-70"/>
+                    <input type="text" className="grow" placeholder="Please enter your name" 
+                    onChange={(e) => setEmail(e.target.value)}
+                    />
+                    </label>
+                       
+                        <label className="input flex items-center w-full gap-2 focus:outline-none focus:ring-2 focus:ring-purple-400">
+                        <TbLockPassword className="h-4 w-4 opacity-70"/>
+
                             <input
                                 type={showPassword ? "text" : "password"}
                                 placeholder="Password"
                                 name="password"
                                 value={password || ""}
                                 onChange={(e) => setPassword(e.target.value)}
-                                className="p-3 w-full border rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-400 " />
+                                className="grow  " />
+                       
                             <button
                                 type="button"
-                                className="absolute inset-y-0 right-3 flex items-center justify-center text-gray-600"
                                 onClick={() => setShowPassword(!showPassword)}
                             >
                                 {showPassword ? <FaEyeSlash /> : <FaEye />}
                             </button>
-                        </div>
+                        </label>
+                        <label className="input flex items-center w-full gap-2 focus:outline-none focus:ring-2 focus:ring-purple-400">
+                        <TbLockPassword className="h-4 w-4 opacity-70"/>
+                            <input
+                                type={showConfirmPassword ? "text" : "password"}
+                                placeholder="Confirm Password"
+                                name="password"
+                                value={confirmPassword || ""}
+                                onChange={(e) => setConfirmPassword(e.target.value)}
+                                className="grow" />
+                            <button
+                                type="button"
+                                onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                            >
+                                {showConfirmPassword ? <FaEyeSlash /> : <FaEye />}
+                            </button>
+                        </label>
                         <div className="flex justify-between items-center">
                             <label className="flex items-center gap-2">
                                 <input type="checkbox" className="h-4 w-4 text-indigo-500 checked:bg-indigo-500" />
                                 <span className="text-sm text-white">Remember me</span>
                             </label>
-                            <a href="#" className="text-sm text-indigo-500 hover:underline">Forgot password?</a>
+                            <span className="text-sm text-indigo-500 hover:underline hover:text-purple-600 ">Forgot password?</span>
                         </div>
                         <button className="bg-indigo-500 text-white py-3 rounded-lg hover:bg-purple-600">Sign In</button>
                         <div className="flex items-center w-full">
@@ -59,7 +90,7 @@ const SignUpPage = ({ onSwitch }: { onSwitch: (view: "signin" | "signup" | "forg
                                 <FaFacebook size={40} />
                             </button>
                         </div>
-                        <p className="text-white text-center mt-4">Already have an account?          <span className="text-indigo-500 hover:underline" onClick={() => onSwitch("signin")}>Sign In</span></p>
+                        <p className="text-white text-center mt-4">Already have an account?  <span className="text-indigo-500 hover:underline hover:text-purple-600" onClick={() => onSwitch("signin")}>Sign In</span></p>
                     </form>
                 </div>
             </div></>
