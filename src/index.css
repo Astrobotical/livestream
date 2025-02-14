@@ -20,3 +20,6 @@ input[type="date"]::-webkit-calendar-picker-indicator {
 .dark .streamText{
     @apply text-red-600 font-extralight
 }
+.steps .step::before{
+    color: white !important; /* Force white color on step numbers */
+}
