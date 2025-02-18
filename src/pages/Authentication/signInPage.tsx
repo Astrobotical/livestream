@@ -64,7 +64,7 @@ const SignInPage = ({ onSwitch }: { onSwitch: (view: "signin" | "signup" | "forg
                     </form>
                 </div><div className=" hidden md:flex  w-[50%]  bg-indigo-500 flex flex-col items-center justify-center">
                     <h2 className="text-3xl font-bold text-white">Welcome Back!</h2>
-                    <p className="text-white mt-4 text-lg text-center">Already have an account? Sign in to access your dashboard and stay connected.</p>
+                    <p className="text-white mt-4 text-lg text-center p-3">Already have an account? Sign in to access your dashboard and stay connected.</p>
                 </div>
             </div></>
     );
