@@ -24,7 +24,7 @@ const ForgetPasswordPage = ({ onSwitch }: { onSwitch: (view: "signin" | "signup"
           <span className="md:text-2x1 mb-2">Please provide your account's email!</span>
             <label className="input input-bordered flex items-center w-full gap-2 mx-6">
               <MdOutlineEmail className="h-4 w-4 opacity-70" />
-              <input type="text" className="grow" placeholder="Please enter your name"
+              <input type="text" className="grow" placeholder="Please the email associated with your account"
                 onChange={(e) => setEmail(e.target.value)}
               />
             </label>
