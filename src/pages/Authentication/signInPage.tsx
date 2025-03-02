@@ -3,11 +3,35 @@ import { FaEyeSlash, FaEye, FaFacebook } from "react-icons/fa";
 import { FcGoogle } from "react-icons/fc";
 import { MdOutlineEmail } from "react-icons/md";
 import { TbLockPassword } from "react-icons/tb";
-
+import { useGoogleLogin, CredentialResponse } from "@react-oauth/google";
 const SignInPage = ({ onSwitch }: { onSwitch: (view: "signin" | "signup" | "forgotpassword") => void }) => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [showPassword, setShowPassword] = useState(false);
+
+    const handleGoogleLogin = useGoogleLogin({
+        onSuccess: async (response) => {
+          const token = response.access_token;
+      
+          // Send token to Laravel backend for verification
+          const res = await fetch("http://localhost:8000/api/auth/google", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ token }),
+          });
+      
+          const data = await res.json();
+          console.log("Backend Response:", data);
+      
+          if (data.success) {
+            console.log("User authenticated:", data.user);
+            localStorage.setItem("authToken", data.token);
+          } else {
+            console.error("Authentication failed");
+          }
+        },
+        onError: () => console.log("Google Sign-In Failed"),
+      });
     return (
         <>
             <div className="flex w-full h-full bg-gray-800">
@@ -54,7 +78,7 @@ const SignInPage = ({ onSwitch }: { onSwitch: (view: "signin" | "signup" | "forg
                         </div>
                         <div className="flex justify-center items-center gap-4">
                             <button className="bg-indigo-500 text-white py-3 px-6 rounded-xl mt-6 hover:bg-purple-600 flex items-center justify-center gap-2">
-                                <FcGoogle size={40} />
+                                <FcGoogle size={40}  onClick={() => handleGoogleLogin()} />
                             </button>
                             <button className="bg-indigo-500 text-white py-3 px-6 rounded-xl mt-6 hover:bg-purple-600 flex items-center justify-center gap-2">
                                 <FaFacebook size={40} />

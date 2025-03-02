@@ -11,6 +11,7 @@ import { setToken } from "../../redux/authSlice";
 import SignInPage from "./signInPage";
 import SignUpPage from "./signUpPage";
 import ForgotPasswordPage from "./ForgotPasswordPage";
+import { GoogleOAuthProvider } from "@react-oauth/google";
 
 const AuthenticationPage = () => {
   const [email, setEmail] = useState("");
@@ -132,8 +133,10 @@ const AuthenticationPage = () => {
       setIsLoading(false);
     }
   };
+  const clientId= "189791029115-orogb7etpchbgpe6947m9g9pnbna8utj.apps.googleusercontent.com";
 //"h-full w-full rounded-3xl shadow-lg overflow-hidden"
   return (
+  <GoogleOAuthProvider clientId={clientId}>
     <div className="h-[100vh]  w-screen flex justify-center items-center bg-gray-700 overflow-hidden">
     <div className="h-[80vh] w-4/5 max-w-5xl rounded-3xl shadow-lg flex  bg-gray-800">
       <AnimatePresence mode="wait">
@@ -152,6 +155,7 @@ const AuthenticationPage = () => {
       </AnimatePresence>
     </div>
   </div>
+  </GoogleOAuthProvider>
   );
 };
 

@@ -31,7 +31,7 @@ const ForgetPasswordPage = ({ onSwitch }: { onSwitch: (view: "signin" | "signup"
             <button className="bg-indigo-500 text-white p-2 rounded mt-5 w-2/3 mx-auto" onClick={(E)=>handleInitial(E)}>Reset Password</button>
           </form>
           <div className="mt-4 text-center">
-            <p className="text-sm mt-2">
+            <p className="text-sm mt-2 text-white">
               Don't have an account?
               <button className="ml-1 text-indigo-500" onClick={() => onSwitch("signup")}>
                 Sign Up
